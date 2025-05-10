@@ -7,6 +7,7 @@ import { route } from "./routes";
 import TopProgressBar from "./shared/components/loaders/TopProgressBar";
 import { useSelector } from "react-redux";
 import './assets/sass/style.react.scss';
+import 'swiper/css/bundle';
 
 function AdminApp(props) {
     const { config } = props;

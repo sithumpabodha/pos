@@ -11,6 +11,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react'
 import reportWebVitals from './reportWebVitals';
 import './assets/sass/style.react.scss';
+import 'swiper/css/bundle';
 
 const persistConfig = {
     key: 'root',

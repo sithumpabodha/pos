@@ -13,6 +13,7 @@ import ResetPassword from "./components/auth/ResetPassword";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import AdminApp from "./AdminApp";
 import { getFiles } from "./locales/index";
+import './assets/sass/style.react.scss';
 
 function App() {
     //do not remove updateLanguag

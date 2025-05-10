@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Route, useLocation, Navigate, Routes } from "react-router-dom";
-import "../../pos/src/assets/sass/style.react.scss";
+//import "../../pos/src/assets/sass/style.react.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { IntlProvider } from "react-intl";
 import { settingsKey, Tokens } from "./constants";

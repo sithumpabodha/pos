@@ -1,11 +1,12 @@
 import React from "react";
 import { Route, Navigate, Routes } from "react-router-dom";
-import "../../pos/src/assets/sass/style.react.scss";
+//import "../../pos/src/assets/sass/style.react.scss";
 import { Tokens } from "./constants";
 import { ProtectedRoute } from "./shared/sharedMethod";
 import { route } from "./routes";
 import TopProgressBar from "./shared/components/loaders/TopProgressBar";
 import { useSelector } from "react-redux";
+import './assets/sass/style.react.scss';
 
 function AdminApp(props) {
     const { config } = props;

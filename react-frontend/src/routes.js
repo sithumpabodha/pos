@@ -87,6 +87,7 @@ import EditLanguageData from "./components/languages/EditLanguageData";
 import BaseUnits from "./components/base-unit/BaseUnits";
 import RegisterReport from "./components/report/registerReport/RegisterReport";
 import Variation from "./components/variation/Variation";
+import './assets/sass/style.react.scss';
 
 export const route = [
     {

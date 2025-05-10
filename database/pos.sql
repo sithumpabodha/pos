@@ -2,9 +2,9 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 04, 2023 at 05:22 AM
--- Server version: 8.1.0
+-- Host: 127.0.0.1
+-- Generation Time: May 09, 2025 at 08:32 AM
+-- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -28,11 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `adjustments` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
-  `total_products` int DEFAULT NULL,
+  `reference_code` varchar(255) DEFAULT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
+  `total_products` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -44,11 +44,11 @@ CREATE TABLE `adjustments` (
 --
 
 CREATE TABLE `adjustment_items` (
-  `id` bigint UNSIGNED NOT NULL,
-  `adjustment_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `adjustment_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `quantity` double DEFAULT NULL,
-  `method_type` int NOT NULL,
+  `method_type` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -60,9 +60,9 @@ CREATE TABLE `adjustment_items` (
 --
 
 CREATE TABLE `base_units` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `is_default` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -83,12 +83,19 @@ INSERT INTO `base_units` (`id`, `name`, `is_default`, `created_at`, `updated_at`
 --
 
 CREATE TABLE `brands` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` longtext DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `brands`
+--
+
+INSERT INTO `brands` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'Common', NULL, '2025-05-08 20:15:13', '2025-05-08 20:22:56');
 
 -- --------------------------------------------------------
 
@@ -97,10 +104,10 @@ CREATE TABLE `brands` (
 --
 
 CREATE TABLE `countries` (
-  `id` int UNSIGNED NOT NULL,
-  `name` varchar(170) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `short_code` varchar(170) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone_code` int DEFAULT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(170) NOT NULL,
+  `short_code` varchar(170) DEFAULT NULL,
+  `phone_code` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -364,15 +371,15 @@ INSERT INTO `countries` (`id`, `name`, `short_code`, `phone_code`, `created_at`,
 --
 
 CREATE TABLE `coupon_codes` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `how_many_time_can_use` int NOT NULL,
-  `discount_type` int NOT NULL,
+  `how_many_time_can_use` int(11) NOT NULL,
+  `discount_type` int(11) NOT NULL,
   `discount` double NOT NULL,
-  `how_many_time_used` int NOT NULL DEFAULT '0',
+  `how_many_time_used` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -384,8 +391,8 @@ CREATE TABLE `coupon_codes` (
 --
 
 CREATE TABLE `coupon_product` (
-  `coupon_code_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL
+  `coupon_code_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -395,10 +402,10 @@ CREATE TABLE `coupon_product` (
 --
 
 CREATE TABLE `currencies` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `symbol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `symbol` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -408,7 +415,7 @@ CREATE TABLE `currencies` (
 --
 
 INSERT INTO `currencies` (`id`, `name`, `code`, `symbol`, `created_at`, `updated_at`) VALUES
-(1, 'India', 'INR', '₹', '2023-11-03 23:52:46', '2023-11-03 23:52:46');
+(1, 'Sri Lanka', 'Rs.', 'Rs.', '2023-11-03 23:52:46', '2023-11-03 23:52:46');
 
 -- --------------------------------------------------------
 
@@ -417,14 +424,14 @@ INSERT INTO `currencies` (`id`, `name`, `code`, `symbol`, `created_at`, `updated
 --
 
 CREATE TABLE `customers` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
   `dob` date DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `address` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -443,16 +450,16 @@ INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `dob`, `country`, `city
 --
 
 CREATE TABLE `expenses` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
-  `expense_category_id` bigint UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
+  `expense_category_id` bigint(20) UNSIGNED NOT NULL,
   `amount` double NOT NULL,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `details` text COLLATE utf8mb4_unicode_ci,
+  `reference_code` varchar(255) DEFAULT NULL,
+  `details` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `title` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -462,9 +469,9 @@ CREATE TABLE `expenses` (
 --
 
 CREATE TABLE `expense_categories` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -476,13 +483,13 @@ CREATE TABLE `expense_categories` (
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -492,11 +499,11 @@ CREATE TABLE `failed_jobs` (
 --
 
 CREATE TABLE `holds` (
-  `id` bigint UNSIGNED NOT NULL,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `reference_code` varchar(255) DEFAULT NULL,
   `date` date NOT NULL,
-  `customer_id` bigint UNSIGNED NOT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
   `tax_rate` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
   `discount` double DEFAULT NULL,
@@ -504,8 +511,8 @@ CREATE TABLE `holds` (
   `grand_total` double DEFAULT NULL,
   `received_amount` double DEFAULT NULL,
   `paid_amount` double DEFAULT NULL,
-  `status` int DEFAULT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci,
+  `status` int(11) DEFAULT NULL,
+  `note` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -517,18 +524,18 @@ CREATE TABLE `holds` (
 --
 
 CREATE TABLE `hold_items` (
-  `id` bigint UNSIGNED NOT NULL,
-  `hold_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `hold_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `product_price` double DEFAULT NULL,
   `net_unit_price` double DEFAULT NULL,
-  `tax_type` int NOT NULL,
+  `tax_type` int(11) NOT NULL,
   `tax_value` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
-  `discount_type` int NOT NULL,
+  `discount_type` int(11) NOT NULL,
   `discount_value` double DEFAULT NULL,
   `discount_amount` double DEFAULT NULL,
-  `sale_unit` int NOT NULL,
+  `sale_unit` int(11) NOT NULL,
   `quantity` double DEFAULT NULL,
   `sub_total` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -542,10 +549,10 @@ CREATE TABLE `hold_items` (
 --
 
 CREATE TABLE `languages` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `iso_code` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `iso_code` varchar(191) NOT NULL,
+  `is_default` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -562,7 +569,8 @@ INSERT INTO `languages` (`id`, `name`, `iso_code`, `is_default`, `created_at`, `
 (5, 'German', 'gr', 0, '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (6, 'Spanish', 'sp', 0, '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (7, 'Turkish', 'tr', 0, '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(8, 'vietnamese', 'vi', 0, '2023-11-03 23:52:45', '2023-11-03 23:52:45');
+(8, 'vietnamese', 'vi', 0, '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
+(9, 'Sinhala', '63', 0, '2025-05-08 19:49:47', '2025-05-08 19:49:47');
 
 -- --------------------------------------------------------
 
@@ -571,13 +579,13 @@ INSERT INTO `languages` (`id`, `name`, `iso_code`, `is_default`, `created_at`, `
 --
 
 CREATE TABLE `mail_templates` (
-  `id` bigint UNSIGNED NOT NULL,
-  `template_name` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `template_name` text NOT NULL,
+  `content` longtext NOT NULL,
+  `type` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0'
+  `status` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -591,18 +599,48 @@ INSERT INTO `mail_templates` (`id`, `template_name`, `content`, `type`, `created
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `main_products`
+--
+
+CREATE TABLE `main_products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `product_unit` varchar(255) DEFAULT NULL,
+  `product_type` tinyint(4) NOT NULL COMMENT '1=Single, 2=Variable',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `main_products`
+--
+
+INSERT INTO `main_products` (`id`, `name`, `code`, `product_unit`, `product_type`, `created_at`, `updated_at`) VALUES
+(7, 'book', '1010116', '1', 1, '2025-05-08 20:29:04', '2025-05-08 20:29:04');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `manage_stocks`
 --
 
 CREATE TABLE `manage_stocks` (
-  `id` bigint UNSIGNED NOT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `quantity` double NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `alert` tinyint(1) NOT NULL DEFAULT '0'
+  `alert` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `manage_stocks`
+--
+
+INSERT INTO `manage_stocks` (`id`, `warehouse_id`, `product_id`, `quantity`, `created_at`, `updated_at`, `alert`) VALUES
+(1, 1, 7, 18, '2025-05-08 20:29:05', '2025-05-08 21:08:10', 0);
 
 -- --------------------------------------------------------
 
@@ -611,25 +649,33 @@ CREATE TABLE `manage_stocks` (
 --
 
 CREATE TABLE `media` (
-  `id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `collection_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mime_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `disk` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `conversions_disk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `size` bigint UNSIGNED NOT NULL,
-  `manipulations` json NOT NULL,
-  `custom_properties` json NOT NULL,
-  `generated_conversions` json NOT NULL,
-  `responsive_images` json NOT NULL,
-  `order_column` int UNSIGNED DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` char(36) DEFAULT NULL,
+  `collection_name` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `mime_type` varchar(255) DEFAULT NULL,
+  `disk` varchar(255) NOT NULL,
+  `conversions_disk` varchar(255) DEFAULT NULL,
+  `size` bigint(20) UNSIGNED NOT NULL,
+  `manipulations` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`manipulations`)),
+  `custom_properties` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`custom_properties`)),
+  `generated_conversions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`generated_conversions`)),
+  `responsive_images` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`responsive_images`)),
+  `order_column` int(10) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `media`
+--
+
+INSERT INTO `media` (`id`, `model_type`, `model_id`, `uuid`, `collection_name`, `name`, `file_name`, `mime_type`, `disk`, `conversions_disk`, `size`, `manipulations`, `custom_properties`, `generated_conversions`, `responsive_images`, `order_column`, `created_at`, `updated_at`) VALUES
+(1, 'App\\Models\\Setting', 34, '1f1f3d5f-6aaa-4444-891b-be16fd215d4b', 'settings', '—Pngtree—letter l logo png design_6844876', '—Pngtree—letter-l-logo-png-design_6844876.png', 'image/png', 'public', 'public', 133388, '[]', '[]', '[]', '[]', 1, '2025-05-08 20:11:30', '2025-05-08 20:11:30'),
+(2, 'App\\Models\\Setting', 34, '1dc9f638-d338-4bce-8767-c6dcbcef6c98', 'settings', 'infycare-logo', 'infycare-logo.png', 'image/png', 'public', 'public', 112467, '[]', '[]', '[]', '[]', 2, '2025-05-08 20:44:30', '2025-05-08 20:44:30');
 
 -- --------------------------------------------------------
 
@@ -638,9 +684,9 @@ CREATE TABLE `media` (
 --
 
 CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -732,7 +778,20 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (82, '2023_06_16_115153_add_new_field_into_sales_table', 1),
 (83, '2023_07_07_064405_create_coupon_codes_table', 1),
 (84, '2023_07_07_083655_create_coupon_product_table', 1),
-(85, '2023_09_16_000000_rename_password_resets_table', 1);
+(85, '2023_09_16_000000_rename_password_resets_table', 1),
+(86, '2023_11_21_115157_add_manage_variations_permission', 2),
+(87, '2023_11_21_123327_create_variations_table', 2),
+(88, '2023_11_21_123338_create_variation_types_table', 2),
+(89, '2023_12_21_065548_add_product_code_field_in_products_table', 2),
+(90, '2023_12_21_090730_add_variation_products_table', 2),
+(91, '2023_12_22_064744_create_main_products_table', 2),
+(92, '2023_12_22_065109_add_main_product_id_field_in_variation_products_table', 2),
+(93, '2023_12_22_065227_fill_up_product_code', 2),
+(94, '2023_12_29_064841_add_main_product_id_field_in_products_table', 2),
+(95, '2023_12_29_065039_fill_up_main_product_table_data', 2),
+(96, '2024_01_12_093843_move_product_images_to_main_product', 2),
+(97, '2024_03_01_085230_add_new_field_in_settings_table', 2),
+(98, '2024_03_13_103510_add_new_setting_value_in_settings_table', 2);
 
 -- --------------------------------------------------------
 
@@ -741,9 +800,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `model_has_permissions` (
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -753,9 +812,9 @@ CREATE TABLE `model_has_permissions` (
 --
 
 CREATE TABLE `model_has_roles` (
-  `role_id` bigint UNSIGNED NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint UNSIGNED NOT NULL
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -772,8 +831,8 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 --
 
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -784,10 +843,10 @@ CREATE TABLE `password_reset_tokens` (
 --
 
 CREATE TABLE `permissions` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'web',
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `display_name` varchar(255) DEFAULT NULL,
+  `guard_name` varchar(255) NOT NULL DEFAULT 'web',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -823,7 +882,8 @@ INSERT INTO `permissions` (`id`, `name`, `display_name`, `guard_name`, `created_
 (24, 'manage_quotations', 'Manage Quotations', 'web', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (25, 'manage_sms_templates', 'Manage Sms Templates', 'web', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (26, 'manage_sms_apis', 'Manage Sms Apis', 'web', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(27, 'manage_language', 'Manage Language', 'web', '2023-11-03 23:52:45', '2023-11-03 23:52:45');
+(27, 'manage_language', 'Manage Language', 'web', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
+(28, 'manage_variations', 'Manage Variations', 'web', '2025-05-08 19:16:23', '2025-05-08 19:16:23');
 
 -- --------------------------------------------------------
 
@@ -832,17 +892,26 @@ INSERT INTO `permissions` (`id`, `name`, `display_name`, `guard_name`, `created_
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `personal_access_tokens`
+--
+
+INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
+(1, 'App\\Models\\User', 1, 'token', '6c6ddf8d6da20e785e680fa10405626a974a75d16c42c59598e438612201ceb7', '[\"*\"]', '2025-05-08 21:21:03', NULL, '2025-05-08 19:22:16', '2025-05-08 21:21:03'),
+(2, 'App\\Models\\User', 1, 'token', 'd323d5e37aa6653b509cd453aa5d635df4c23571f38461a184507f35d22f558a', '[\"*\"]', '2025-05-09 00:02:19', NULL, '2025-05-08 22:11:23', '2025-05-09 00:02:19'),
+(3, 'App\\Models\\User', 1, 'token', '36984874b519c2a246754477eb83810b7ef0a17ebfd10351bea8fe0b9243cc84', '[\"*\"]', '2025-05-09 00:53:09', NULL, '2025-05-09 00:24:00', '2025-05-09 00:53:09');
 
 -- --------------------------------------------------------
 
@@ -851,7 +920,7 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `pos_register` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `cash_in_hand` double NOT NULL,
   `closed_at` datetime DEFAULT NULL,
   `cash_in_hand_while_closing` double DEFAULT NULL,
@@ -861,8 +930,8 @@ CREATE TABLE `pos_register` (
   `total_sale` double DEFAULT NULL,
   `total_return` double DEFAULT NULL,
   `total_amount` double DEFAULT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci,
-  `user_id` bigint UNSIGNED NOT NULL,
+  `notes` text DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -874,25 +943,34 @@ CREATE TABLE `pos_register` (
 --
 
 CREATE TABLE `products` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `barcode_symbol` int NOT NULL DEFAULT '1',
-  `product_category_id` bigint UNSIGNED NOT NULL,
-  `brand_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `main_product_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `product_code` varchar(255) NOT NULL,
+  `barcode_symbol` int(11) NOT NULL DEFAULT 1,
+  `product_category_id` bigint(20) UNSIGNED NOT NULL,
+  `brand_id` bigint(20) UNSIGNED NOT NULL,
   `product_cost` double NOT NULL,
   `product_price` double NOT NULL,
-  `product_unit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sale_unit` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `purchase_unit` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `stock_alert` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `quantity_limit` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_unit` varchar(255) NOT NULL,
+  `sale_unit` varchar(255) DEFAULT NULL,
+  `purchase_unit` varchar(255) DEFAULT NULL,
+  `stock_alert` varchar(255) DEFAULT NULL,
+  `quantity_limit` varchar(255) DEFAULT NULL,
   `order_tax` double DEFAULT NULL,
-  `tax_type` enum('1','2') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci,
+  `tax_type` enum('1','2') DEFAULT NULL,
+  `notes` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `main_product_id`, `name`, `code`, `product_code`, `barcode_symbol`, `product_category_id`, `brand_id`, `product_cost`, `product_price`, `product_unit`, `sale_unit`, `purchase_unit`, `stock_alert`, `quantity_limit`, `order_tax`, `tax_type`, `notes`, `created_at`, `updated_at`) VALUES
+(7, 7, 'book', '1010116', '1010116', 1, 1, 1, 150, 160, '1', '1', '1', '5', NULL, 0, '1', NULL, '2025-05-08 20:29:04', '2025-05-08 20:29:04');
 
 -- --------------------------------------------------------
 
@@ -901,11 +979,18 @@ CREATE TABLE `products` (
 --
 
 CREATE TABLE `product_categories` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `product_categories`
+--
+
+INSERT INTO `product_categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Common', '2025-05-08 20:15:45', '2025-05-08 20:15:45');
 
 -- --------------------------------------------------------
 
@@ -914,10 +999,10 @@ CREATE TABLE `product_categories` (
 --
 
 CREATE TABLE `purchases` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `supplier_id` bigint UNSIGNED NOT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `supplier_id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
   `tax_rate` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
   `discount` double DEFAULT NULL,
@@ -925,13 +1010,20 @@ CREATE TABLE `purchases` (
   `grand_total` double DEFAULT NULL,
   `received_amount` double DEFAULT NULL,
   `paid_amount` double DEFAULT NULL,
-  `payment_type` int DEFAULT NULL,
-  `status` int DEFAULT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_type` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `reference_code` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `purchases`
+--
+
+INSERT INTO `purchases` (`id`, `date`, `supplier_id`, `warehouse_id`, `tax_rate`, `tax_amount`, `discount`, `shipping`, `grand_total`, `received_amount`, `paid_amount`, `payment_type`, `status`, `notes`, `reference_code`, `created_at`, `updated_at`) VALUES
+(1, '2025-05-09', 1, 1, 0, 0, 0, 0, 3000, NULL, NULL, 0, 1, NULL, 'PU_1111', '2025-05-08 20:29:04', '2025-05-08 20:29:04');
 
 -- --------------------------------------------------------
 
@@ -940,10 +1032,10 @@ CREATE TABLE `purchases` (
 --
 
 CREATE TABLE `purchases_return` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `supplier_id` bigint UNSIGNED NOT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `supplier_id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
   `tax_rate` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
   `discount` double DEFAULT NULL,
@@ -951,11 +1043,11 @@ CREATE TABLE `purchases_return` (
   `grand_total` double DEFAULT NULL,
   `received_amount` double DEFAULT NULL,
   `paid_amount` double DEFAULT NULL,
-  `payment_type` int DEFAULT NULL,
-  `status` int DEFAULT NULL,
-  `payment_status` int DEFAULT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_type` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `payment_status` int(11) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `reference_code` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -967,18 +1059,18 @@ CREATE TABLE `purchases_return` (
 --
 
 CREATE TABLE `purchases_return_items` (
-  `id` bigint UNSIGNED NOT NULL,
-  `purchase_return_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `purchase_return_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `product_cost` double DEFAULT NULL,
   `net_unit_cost` double DEFAULT NULL,
-  `tax_type` int NOT NULL,
+  `tax_type` int(11) NOT NULL,
   `tax_value` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
-  `discount_type` int NOT NULL,
+  `discount_type` int(11) NOT NULL,
   `discount_value` double DEFAULT NULL,
   `discount_amount` double DEFAULT NULL,
-  `purchase_unit` int NOT NULL,
+  `purchase_unit` int(11) NOT NULL,
   `quantity` double DEFAULT NULL,
   `sub_total` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -992,23 +1084,30 @@ CREATE TABLE `purchases_return_items` (
 --
 
 CREATE TABLE `purchase_items` (
-  `id` bigint UNSIGNED NOT NULL,
-  `purchase_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `purchase_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `product_cost` double DEFAULT NULL,
   `net_unit_cost` double DEFAULT NULL,
-  `tax_type` int NOT NULL,
+  `tax_type` int(11) NOT NULL,
   `tax_value` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
-  `discount_type` int NOT NULL,
+  `discount_type` int(11) NOT NULL,
   `discount_value` double DEFAULT NULL,
   `discount_amount` double DEFAULT NULL,
-  `purchase_unit` int NOT NULL,
+  `purchase_unit` int(11) NOT NULL,
   `quantity` double DEFAULT NULL,
   `sub_total` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `purchase_items`
+--
+
+INSERT INTO `purchase_items` (`id`, `purchase_id`, `product_id`, `product_cost`, `net_unit_cost`, `tax_type`, `tax_value`, `tax_amount`, `discount_type`, `discount_value`, `discount_amount`, `purchase_unit`, `quantity`, `sub_total`, `created_at`, `updated_at`) VALUES
+(1, 1, 7, 150, 150, 1, 0, 0, 2, 0, 0, 1, 20, 3000, '2025-05-08 20:29:04', '2025-05-08 20:29:04');
 
 -- --------------------------------------------------------
 
@@ -1017,10 +1116,10 @@ CREATE TABLE `purchase_items` (
 --
 
 CREATE TABLE `quotations` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `customer_id` bigint UNSIGNED NOT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
   `tax_rate` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
   `discount` double DEFAULT NULL,
@@ -1028,10 +1127,10 @@ CREATE TABLE `quotations` (
   `grand_total` double DEFAULT NULL,
   `received_amount` double DEFAULT NULL,
   `paid_amount` double DEFAULT NULL,
-  `status` int DEFAULT NULL,
-  `is_sale_created` tinyint(1) NOT NULL DEFAULT '0',
-  `note` text COLLATE utf8mb4_unicode_ci,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `is_sale_created` tinyint(1) NOT NULL DEFAULT 0,
+  `note` text DEFAULT NULL,
+  `reference_code` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1043,18 +1142,18 @@ CREATE TABLE `quotations` (
 --
 
 CREATE TABLE `quotation_items` (
-  `id` bigint UNSIGNED NOT NULL,
-  `quotation_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `quotation_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `product_price` double DEFAULT NULL,
   `net_unit_price` double DEFAULT NULL,
-  `tax_type` int NOT NULL,
+  `tax_type` int(11) NOT NULL,
   `tax_value` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
-  `discount_type` int NOT NULL,
+  `discount_type` int(11) NOT NULL,
   `discount_value` double DEFAULT NULL,
   `discount_amount` double DEFAULT NULL,
-  `sale_unit` int NOT NULL,
+  `sale_unit` int(11) NOT NULL,
   `quantity` double DEFAULT NULL,
   `sub_total` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1068,10 +1167,10 @@ CREATE TABLE `quotation_items` (
 --
 
 CREATE TABLE `roles` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'web',
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `display_name` varchar(255) DEFAULT NULL,
+  `guard_name` varchar(255) NOT NULL DEFAULT 'web',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1090,8 +1189,8 @@ INSERT INTO `roles` (`id`, `name`, `display_name`, `guard_name`, `created_at`, `
 --
 
 CREATE TABLE `role_has_permissions` (
-  `permission_id` bigint UNSIGNED NOT NULL,
-  `role_id` bigint UNSIGNED NOT NULL
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1125,7 +1224,8 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (24, 1),
 (25, 1),
 (26, 1),
-(27, 1);
+(27, 1),
+(28, 1);
 
 -- --------------------------------------------------------
 
@@ -1134,11 +1234,11 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 --
 
 CREATE TABLE `sales` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `is_return` tinyint(1) NOT NULL DEFAULT '0',
-  `customer_id` bigint UNSIGNED NOT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `is_return` tinyint(1) NOT NULL DEFAULT 0,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
   `tax_rate` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
   `discount` double DEFAULT NULL,
@@ -1146,15 +1246,23 @@ CREATE TABLE `sales` (
   `grand_total` double DEFAULT NULL,
   `received_amount` double DEFAULT NULL,
   `paid_amount` double DEFAULT NULL,
-  `payment_type` int DEFAULT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_type` int(11) DEFAULT NULL,
+  `note` text DEFAULT NULL,
+  `reference_code` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `status` int DEFAULT NULL,
-  `payment_status` int DEFAULT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL
+  `status` int(11) DEFAULT NULL,
+  `payment_status` int(11) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `date`, `is_return`, `customer_id`, `warehouse_id`, `tax_rate`, `tax_amount`, `discount`, `shipping`, `grand_total`, `received_amount`, `paid_amount`, `payment_type`, `note`, `reference_code`, `created_at`, `updated_at`, `status`, `payment_status`, `user_id`) VALUES
+(1, '2025-05-09', 0, 1, 1, 0, 0, 0, 0, 160, 0, 160, 1, NULL, 'SA_1111', '2025-05-08 20:31:33', '2025-05-08 20:31:33', 1, 1, 1),
+(3, '2025-05-09', 0, 1, 1, 0, 0, 0, 0, 160, 0, 160, 1, NULL, 'SA_1113', '2025-05-08 21:08:10', '2025-05-08 21:08:10', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1163,16 +1271,24 @@ CREATE TABLE `sales` (
 --
 
 CREATE TABLE `sales_payments` (
-  `id` bigint UNSIGNED NOT NULL,
-  `sale_id` bigint UNSIGNED NOT NULL,
-  `reference` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sale_id` bigint(20) UNSIGNED NOT NULL,
+  `reference` varchar(255) DEFAULT NULL,
   `payment_date` date NOT NULL,
-  `payment_type` int DEFAULT NULL,
+  `payment_type` int(11) DEFAULT NULL,
   `amount` double DEFAULT NULL,
   `received_amount` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sales_payments`
+--
+
+INSERT INTO `sales_payments` (`id`, `sale_id`, `reference`, `payment_date`, `payment_type`, `amount`, `received_amount`, `created_at`, `updated_at`) VALUES
+(1, 1, NULL, '2025-05-09', 1, 160, 160, '2025-05-08 20:31:33', '2025-05-08 20:31:33'),
+(2, 3, NULL, '2025-05-09', 1, 160, 160, '2025-05-08 21:08:10', '2025-05-08 21:08:10');
 
 -- --------------------------------------------------------
 
@@ -1181,21 +1297,21 @@ CREATE TABLE `sales_payments` (
 --
 
 CREATE TABLE `sales_return` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `sale_id` bigint UNSIGNED DEFAULT NULL,
-  `customer_id` bigint UNSIGNED NOT NULL,
-  `warehouse_id` bigint UNSIGNED NOT NULL,
+  `sale_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `warehouse_id` bigint(20) UNSIGNED NOT NULL,
   `tax_rate` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
   `discount` double DEFAULT NULL,
   `shipping` double DEFAULT NULL,
   `grand_total` double DEFAULT NULL,
   `paid_amount` double DEFAULT NULL,
-  `payment_type` int DEFAULT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` int DEFAULT NULL,
+  `payment_type` int(11) DEFAULT NULL,
+  `note` text DEFAULT NULL,
+  `reference_code` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1207,23 +1323,31 @@ CREATE TABLE `sales_return` (
 --
 
 CREATE TABLE `sale_items` (
-  `id` bigint UNSIGNED NOT NULL,
-  `sale_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sale_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `product_price` double DEFAULT NULL,
   `net_unit_price` double DEFAULT NULL,
-  `tax_type` int NOT NULL,
+  `tax_type` int(11) NOT NULL,
   `tax_value` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
-  `discount_type` int NOT NULL,
+  `discount_type` int(11) NOT NULL,
   `discount_value` double DEFAULT NULL,
   `discount_amount` double DEFAULT NULL,
-  `sale_unit` int NOT NULL,
+  `sale_unit` int(11) NOT NULL,
   `quantity` double DEFAULT NULL,
   `sub_total` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sale_items`
+--
+
+INSERT INTO `sale_items` (`id`, `sale_id`, `product_id`, `product_price`, `net_unit_price`, `tax_type`, `tax_value`, `tax_amount`, `discount_type`, `discount_value`, `discount_amount`, `sale_unit`, `quantity`, `sub_total`, `created_at`, `updated_at`) VALUES
+(1, 1, 7, 160, 160, 1, 0, 0, 2, 0, 0, 1, 1, 160, '2025-05-08 20:31:33', '2025-05-08 20:31:33'),
+(3, 3, 7, 160, 160, 1, 0, 0, 2, 0, 0, 1, 1, 160, '2025-05-08 21:08:10', '2025-05-08 21:08:10');
 
 -- --------------------------------------------------------
 
@@ -1232,18 +1356,18 @@ CREATE TABLE `sale_items` (
 --
 
 CREATE TABLE `sale_return_items` (
-  `id` bigint UNSIGNED NOT NULL,
-  `sale_return_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sale_return_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `product_price` double DEFAULT NULL,
   `net_unit_price` double DEFAULT NULL,
-  `tax_type` int NOT NULL,
+  `tax_type` int(11) NOT NULL,
   `tax_value` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
-  `discount_type` int NOT NULL,
+  `discount_type` int(11) NOT NULL,
   `discount_value` double DEFAULT NULL,
   `discount_amount` double DEFAULT NULL,
-  `sale_unit` int NOT NULL,
+  `sale_unit` int(11) NOT NULL,
   `quantity` double DEFAULT NULL,
   `sold_quantity` double DEFAULT NULL,
   `sub_total` double DEFAULT NULL,
@@ -1258,9 +1382,9 @@ CREATE TABLE `sale_return_items` (
 --
 
 CREATE TABLE `settings` (
-  `id` bigint UNSIGNED NOT NULL,
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `key` varchar(255) NOT NULL,
+  `value` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1271,27 +1395,27 @@ CREATE TABLE `settings` (
 
 INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
 (1, 'show_version_on_footer', '1', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(2, 'country', 'India', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(3, 'state', 'Gujarat', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(4, 'city', 'Surat', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(5, 'postcode', '395007', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
+(2, 'country', 'Sri Lanka', '2023-11-03 23:52:45', '2025-05-08 20:11:30'),
+(3, 'state', 'Tirikunamalaya', '2023-11-03 23:52:45', '2025-05-08 20:11:30'),
+(4, 'city', 'Kanthale', '2023-11-03 23:52:45', '2025-05-08 20:11:30'),
+(5, 'postcode', '31300', '2023-11-03 23:52:45', '2025-05-08 20:11:30'),
 (6, 'date_format', 'y-m-d', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (7, 'purchase_code', 'PU', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (8, 'purchase_return_code', 'PR', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (9, 'sale_code', 'SA', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (10, 'sale_return_code', 'SR', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
 (11, 'expense_code', 'EX', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(12, 'is_currency_right', '0', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
+(12, 'is_currency_right', 'false', '2023-11-03 23:52:45', '2025-05-08 19:39:33'),
 (13, 'currency', '1', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
-(14, 'email', 'support@infypos.com', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
-(15, 'company_name', 'infy-pos', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
-(16, 'phone', '1234567890', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
-(17, 'developed', 'infyom', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
-(18, 'footer', '2022 Developed by Infy-pos All rights reserved - v1.1.0', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
+(14, 'email', 'lalithcenter@gmail.com', '2023-11-03 23:52:46', '2025-05-08 21:13:32'),
+(15, 'company_name', 'Lalitha Center', '2023-11-03 23:52:46', '2025-05-08 19:39:33'),
+(16, 'phone', '0712071066', '2023-11-03 23:52:46', '2025-05-08 20:11:30'),
+(17, 'developed', 'TechConnect', '2023-11-03 23:52:46', '2025-05-08 19:39:33'),
+(18, 'footer', '2025 Developed by TechConnect Computers All rights reserved', '2023-11-03 23:52:46', '2025-05-08 19:39:33'),
 (19, 'default_language', '1', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
 (20, 'default_customer', '1', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
 (21, 'default_warehouse', '1', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
-(22, 'address', 'C-303, Atlanta Shopping Mall, Nr. Sudama Chowk, Mota Varachha, Surat, Gujarat, India.', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
+(22, 'address', '93 Junction, Kanthale', '2023-11-03 23:52:46', '2025-05-08 19:39:33'),
 (23, 'stripe_key', 'pu_test_yBzA1qI1PcfRBAVn1vJG2VuS00HcyhQX9LASERTFDDS', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
 (24, 'stripe_secret', 'pu_test_yBzA1qI1PcfRBAVn1vJG2VuS00HcyhQX9LASERTFDDS', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
 (25, 'sms_gateway', '1', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
@@ -1303,7 +1427,9 @@ INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
 (31, 'smtp_username', 'test', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
 (32, 'smtp_password', 'test', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
 (33, 'smtp_Encryption', 'tls', '2023-11-03 23:52:46', '2023-11-03 23:52:46'),
-(34, 'logo', 'images/infycare-logo.png', '2023-11-03 23:52:46', '2023-11-03 23:52:46');
+(34, 'logo', 'http://localhost/uploads/settings\\2\\infycare-logo.png', '2023-11-03 23:52:46', '2025-05-08 20:44:30'),
+(35, 'show_logo_in_receipt', '1', '2025-05-08 19:16:24', '2025-05-08 19:16:24'),
+(36, 'show_app_name_in_sidebar', '1', '2025-05-08 19:16:24', '2025-05-08 19:16:24');
 
 -- --------------------------------------------------------
 
@@ -1312,9 +1438,9 @@ INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `sms_settings` (
-  `id` bigint UNSIGNED NOT NULL,
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `key` varchar(255) NOT NULL,
+  `value` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1324,10 +1450,10 @@ CREATE TABLE `sms_settings` (
 --
 
 INSERT INTO `sms_settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
-(1, 'url', 'http://test.com/api/test.php', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(2, 'mobile_key', '', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(3, 'message_key', '', '2023-11-03 23:52:45', '2023-11-03 23:52:45'),
-(4, 'payload', '', '2023-11-03 23:52:45', '2023-11-03 23:52:45');
+(1, 'url', 'https://app.text.lk/api/http/', '2023-11-03 23:52:45', '2025-05-08 21:05:50'),
+(2, 'mobile_key', 'to', '2023-11-03 23:52:45', '2025-05-08 21:05:50'),
+(3, 'message_key', 'message', '2023-11-03 23:52:45', '2025-05-08 21:05:50'),
+(4, 'payload', '{\n  \"data\": {\n    \"from\": \"InfoSMS\",\n    \"destinations\": {\n      \"to\": \"0716560510\"\n    },\n    \"message\": \"Your sale has been completed. Reference: SALE12345, Total: $200.\"\n  }\n}', '2023-11-03 23:52:45', '2025-05-08 21:05:50');
 
 -- --------------------------------------------------------
 
@@ -1336,13 +1462,13 @@ INSERT INTO `sms_settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VA
 --
 
 CREATE TABLE `sms_templates` (
-  `id` bigint UNSIGNED NOT NULL,
-  `template_name` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `template_name` text NOT NULL,
+  `content` longtext NOT NULL,
+  `type` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0'
+  `status` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1350,7 +1476,7 @@ CREATE TABLE `sms_templates` (
 --
 
 INSERT INTO `sms_templates` (`id`, `template_name`, `content`, `type`, `created_at`, `updated_at`, `status`) VALUES
-(1, 'GREETING TO CUSTOMER ON SALES !', 'Hi {customer_name}, Your sales Id is {sales_id}, Sales Date {sales_date}, Total Amount {sales_amount}, You have paid {paid_amount}, and customer total due amount is {due_amount} Thank you visit again', '1', '2023-11-03 23:52:45', '2023-11-03 23:52:45', 0),
+(1, 'GREETING TO CUSTOMER ON SALES !', 'Hi {customer_name}, Your sales Id is {sales_id}, Sales Date {sales_date}, Total Amount {sales_amount}, You have paid {paid_amount}, and customer total due amount is {due_amount} Thank you visit again', '1', '2023-11-03 23:52:45', '2025-05-08 21:12:41', 1),
 (2, 'GREETING TO CUSTOMER ON SALES RETURN !', 'Hi {customer_name}, Your sales return Id is {sales_return_id}, Sales return Date {sales_return_date}, and Total Amount is {sales_return_amount} Thank you visit again', '2', '2023-11-03 23:52:45', '2023-11-03 23:52:45', 0);
 
 -- --------------------------------------------------------
@@ -1360,9 +1486,9 @@ INSERT INTO `sms_templates` (`id`, `template_name`, `content`, `type`, `created_
 --
 
 CREATE TABLE `states` (
-  `id` int UNSIGNED NOT NULL,
-  `name` varchar(170) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country_id` int UNSIGNED NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(170) NOT NULL,
+  `country_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1372,2098 +1498,7 @@ CREATE TABLE `states` (
 --
 
 INSERT INTO `states` (`id`, `name`, `country_id`, `created_at`, `updated_at`) VALUES
-(1, 'Andaman and Nicobar Islands', 101, NULL, NULL),
-(2, 'Andhra Pradesh', 101, NULL, NULL),
-(3, 'Arunachal Pradesh', 101, NULL, NULL),
-(4, 'Assam', 101, NULL, NULL),
-(5, 'Bihar', 101, NULL, NULL),
-(6, 'Chandigarh', 101, NULL, NULL),
-(7, 'Chhattisgarh', 101, NULL, NULL),
-(8, 'Dadra and Nagar Haveli', 101, NULL, NULL),
-(9, 'Daman and Diu', 101, NULL, NULL),
-(10, 'Delhi', 101, NULL, NULL),
-(11, 'Goa', 101, NULL, NULL),
-(12, 'Gujarat', 101, NULL, NULL),
-(13, 'Haryana', 101, NULL, NULL),
-(14, 'Himachal Pradesh', 101, NULL, NULL),
-(15, 'Jammu and Kashmir', 101, NULL, NULL),
-(16, 'Jharkhand', 101, NULL, NULL),
-(17, 'Karnataka', 101, NULL, NULL),
-(19, 'Kerala', 101, NULL, NULL),
-(20, 'Lakshadweep', 101, NULL, NULL),
-(21, 'Madhya Pradesh', 101, NULL, NULL),
-(22, 'Maharashtra', 101, NULL, NULL),
-(23, 'Manipur', 101, NULL, NULL),
-(24, 'Meghalaya', 101, NULL, NULL),
-(25, 'Mizoram', 101, NULL, NULL),
-(26, 'Nagaland', 101, NULL, NULL),
-(29, 'Odisha', 101, NULL, NULL),
-(31, 'Pondicherry', 101, NULL, NULL),
-(32, 'Punjab', 101, NULL, NULL),
-(33, 'Rajasthan', 101, NULL, NULL),
-(34, 'Sikkim', 101, NULL, NULL),
-(35, 'Tamil Nadu', 101, NULL, NULL),
-(36, 'Telangana', 101, NULL, NULL),
-(37, 'Tripura', 101, NULL, NULL),
-(38, 'Uttar Pradesh', 101, NULL, NULL),
-(39, 'Uttarakhand', 101, NULL, NULL),
-(41, 'West Bengal', 101, NULL, NULL),
-(42, 'Badakhshan', 1, NULL, NULL),
-(43, 'Badgis', 1, NULL, NULL),
-(44, 'Baglan', 1, NULL, NULL),
-(45, 'Balkh', 1, NULL, NULL),
-(46, 'Bamiyan', 1, NULL, NULL),
-(47, 'Farah', 1, NULL, NULL),
-(48, 'Faryab', 1, NULL, NULL),
-(49, 'Gawr', 1, NULL, NULL),
-(50, 'Gazni', 1, NULL, NULL),
-(51, 'Herat', 1, NULL, NULL),
-(52, 'Hilmand', 1, NULL, NULL),
-(53, 'Jawzjan', 1, NULL, NULL),
-(54, 'Kabul', 1, NULL, NULL),
-(55, 'Kapisa', 1, NULL, NULL),
-(56, 'Khawst', 1, NULL, NULL),
-(57, 'Kunar', 1, NULL, NULL),
-(58, 'Lagman', 1, NULL, NULL),
-(59, 'Lawghar', 1, NULL, NULL),
-(60, 'Nangarhar', 1, NULL, NULL),
-(61, 'Nimruz', 1, NULL, NULL),
-(62, 'Nuristan', 1, NULL, NULL),
-(63, 'Paktika', 1, NULL, NULL),
-(64, 'Paktiya', 1, NULL, NULL),
-(65, 'Parwan', 1, NULL, NULL),
-(66, 'Qandahar', 1, NULL, NULL),
-(67, 'Qunduz', 1, NULL, NULL),
-(68, 'Samangan', 1, NULL, NULL),
-(69, 'Sar-e Pul', 1, NULL, NULL),
-(70, 'Takhar', 1, NULL, NULL),
-(71, 'Uruzgan', 1, NULL, NULL),
-(72, 'Wardag', 1, NULL, NULL),
-(73, 'Zabul', 1, NULL, NULL),
-(74, 'Berat', 2, NULL, NULL),
-(75, 'Bulqize', 2, NULL, NULL),
-(76, 'Delvine', 2, NULL, NULL),
-(77, 'Devoll', 2, NULL, NULL),
-(78, 'Dibre', 2, NULL, NULL),
-(79, 'Durres', 2, NULL, NULL),
-(80, 'Elbasan', 2, NULL, NULL),
-(81, 'Fier', 2, NULL, NULL),
-(82, 'Gjirokaster', 2, NULL, NULL),
-(83, 'Gramsh', 2, NULL, NULL),
-(84, 'Has', 2, NULL, NULL),
-(85, 'Kavaje', 2, NULL, NULL),
-(86, 'Kolonje', 2, NULL, NULL),
-(87, 'Korce', 2, NULL, NULL),
-(88, 'Kruje', 2, NULL, NULL),
-(89, 'Kucove', 2, NULL, NULL),
-(90, 'Kukes', 2, NULL, NULL),
-(91, 'Kurbin', 2, NULL, NULL),
-(92, 'Lezhe', 2, NULL, NULL),
-(93, 'Librazhd', 2, NULL, NULL),
-(94, 'Lushnje', 2, NULL, NULL),
-(95, 'Mallakaster', 2, NULL, NULL),
-(96, 'Malsi e Madhe', 2, NULL, NULL),
-(97, 'Mat', 2, NULL, NULL),
-(98, 'Mirdite', 2, NULL, NULL),
-(99, 'Peqin', 2, NULL, NULL),
-(100, 'Permet', 2, NULL, NULL),
-(101, 'Pogradec', 2, NULL, NULL),
-(102, 'Puke', 2, NULL, NULL),
-(103, 'Sarande', 2, NULL, NULL),
-(104, 'Shkoder', 2, NULL, NULL),
-(105, 'Skrapar', 2, NULL, NULL),
-(106, 'Tepelene', 2, NULL, NULL),
-(107, 'Tirane', 2, NULL, NULL),
-(108, 'Tropoje', 2, NULL, NULL),
-(109, 'Vlore', 2, NULL, NULL),
-(110, 'Ayn Daflah', 3, NULL, NULL),
-(111, 'Ayn Tamushanat', 3, NULL, NULL),
-(112, 'Adrar', 3, NULL, NULL),
-(113, 'Algiers', 3, NULL, NULL),
-(114, 'Annabah', 3, NULL, NULL),
-(115, 'Bashshar', 3, NULL, NULL),
-(116, 'Batnah', 3, NULL, NULL),
-(117, 'Bijayah', 3, NULL, NULL),
-(118, 'Biskrah', 3, NULL, NULL),
-(119, 'Blidah', 3, NULL, NULL),
-(120, 'Buirah', 3, NULL, NULL),
-(121, 'Bumardas', 3, NULL, NULL),
-(122, 'Burj Bu Arririj', 3, NULL, NULL),
-(123, 'Ghalizan', 3, NULL, NULL),
-(124, 'Ghardayah', 3, NULL, NULL),
-(125, 'Ilizi', 3, NULL, NULL),
-(126, 'Jijili', 3, NULL, NULL),
-(127, 'Jilfah', 3, NULL, NULL),
-(128, 'Khanshalah', 3, NULL, NULL),
-(129, 'Masilah', 3, NULL, NULL),
-(130, 'Midyah', 3, NULL, NULL),
-(131, 'Milah', 3, NULL, NULL),
-(132, 'Muaskar', 3, NULL, NULL),
-(133, 'Mustaghanam', 3, NULL, NULL),
-(134, 'Naama', 3, NULL, NULL),
-(135, 'Oran', 3, NULL, NULL),
-(136, 'Ouargla', 3, NULL, NULL),
-(137, 'Qalmah', 3, NULL, NULL),
-(138, 'Qustantinah', 3, NULL, NULL),
-(139, 'Sakikdah', 3, NULL, NULL),
-(140, 'Satif', 3, NULL, NULL),
-(141, 'Sayda', 3, NULL, NULL),
-(142, 'Sidi ban-al-\'\'Abbas', 3, NULL, NULL),
-(143, 'Suq Ahras', 3, NULL, NULL),
-(144, 'Tamanghasat', 3, NULL, NULL),
-(145, 'Tibazah', 3, NULL, NULL),
-(146, 'Tibissah', 3, NULL, NULL),
-(147, 'Tilimsan', 3, NULL, NULL),
-(148, 'Tinduf', 3, NULL, NULL),
-(149, 'Tisamsilt', 3, NULL, NULL),
-(150, 'Tiyarat', 3, NULL, NULL),
-(151, 'Tizi Wazu', 3, NULL, NULL),
-(152, 'Umm-al-Bawaghi', 3, NULL, NULL),
-(153, 'Wahran', 3, NULL, NULL),
-(154, 'Warqla', 3, NULL, NULL),
-(155, 'Wilaya d Alger', 3, NULL, NULL),
-(156, 'Wilaya de Bejaia', 3, NULL, NULL),
-(157, 'Wilaya de Constantine', 3, NULL, NULL),
-(158, 'al-Aghwat', 3, NULL, NULL),
-(159, 'al-Bayadh', 3, NULL, NULL),
-(160, 'al-Jaza\'\'ir', 3, NULL, NULL),
-(161, 'al-Wad', 3, NULL, NULL),
-(162, 'ash-Shalif', 3, NULL, NULL),
-(163, 'at-Tarif', 3, NULL, NULL),
-(164, 'Eastern', 4, NULL, NULL),
-(165, 'Manu\'\'a', 4, NULL, NULL),
-(166, 'Swains Island', 4, NULL, NULL),
-(167, 'Western', 4, NULL, NULL),
-(168, 'Andorra la Vella', 5, NULL, NULL),
-(169, 'Canillo', 5, NULL, NULL),
-(170, 'Encamp', 5, NULL, NULL),
-(171, 'La Massana', 5, NULL, NULL),
-(172, 'Les Escaldes', 5, NULL, NULL),
-(173, 'Ordino', 5, NULL, NULL),
-(174, 'Sant Julia de Loria', 5, NULL, NULL),
-(175, 'Bengo', 6, NULL, NULL),
-(176, 'Benguela', 6, NULL, NULL),
-(177, 'Bie', 6, NULL, NULL),
-(178, 'Cabinda', 6, NULL, NULL),
-(179, 'Cunene', 6, NULL, NULL),
-(180, 'Huambo', 6, NULL, NULL),
-(181, 'Huila', 6, NULL, NULL),
-(182, 'Kuando-Kubango', 6, NULL, NULL),
-(183, 'Kwanza Norte', 6, NULL, NULL),
-(184, 'Kwanza Sul', 6, NULL, NULL),
-(185, 'Luanda', 6, NULL, NULL),
-(186, 'Lunda Norte', 6, NULL, NULL),
-(187, 'Lunda Sul', 6, NULL, NULL),
-(188, 'Malanje', 6, NULL, NULL),
-(189, 'Moxico', 6, NULL, NULL),
-(190, 'Namibe', 6, NULL, NULL),
-(191, 'Uige', 6, NULL, NULL),
-(192, 'Zaire', 6, NULL, NULL),
-(193, 'Other Provinces', 7, NULL, NULL),
-(194, 'Sector claimed by Argentina/Ch', 8, NULL, NULL),
-(195, 'Sector claimed by Argentina/UK', 8, NULL, NULL),
-(196, 'Sector claimed by Australia', 8, NULL, NULL),
-(197, 'Sector claimed by France', 8, NULL, NULL),
-(198, 'Sector claimed by New Zealand', 8, NULL, NULL),
-(199, 'Sector claimed by Norway', 8, NULL, NULL),
-(200, 'Unclaimed Sector', 8, NULL, NULL),
-(201, 'Barbuda', 9, NULL, NULL),
-(202, 'Saint George', 9, NULL, NULL),
-(203, 'Saint John', 9, NULL, NULL),
-(204, 'Saint Mary', 9, NULL, NULL),
-(205, 'Saint Paul', 9, NULL, NULL),
-(206, 'Saint Peter', 9, NULL, NULL),
-(207, 'Saint Philip', 9, NULL, NULL),
-(208, 'Buenos Aires', 10, NULL, NULL),
-(209, 'Catamarca', 10, NULL, NULL),
-(210, 'Chaco', 10, NULL, NULL),
-(211, 'Chubut', 10, NULL, NULL),
-(212, 'Cordoba', 10, NULL, NULL),
-(213, 'Corrientes', 10, NULL, NULL),
-(214, 'Distrito Federal', 10, NULL, NULL),
-(215, 'Entre Rios', 10, NULL, NULL),
-(216, 'Formosa', 10, NULL, NULL),
-(217, 'Jujuy', 10, NULL, NULL),
-(218, 'La Pampa', 10, NULL, NULL),
-(219, 'La Rioja', 10, NULL, NULL),
-(220, 'Mendoza', 10, NULL, NULL),
-(221, 'Misiones', 10, NULL, NULL),
-(222, 'Neuquen', 10, NULL, NULL),
-(223, 'Rio Negro', 10, NULL, NULL),
-(224, 'Salta', 10, NULL, NULL),
-(225, 'San Juan', 10, NULL, NULL),
-(226, 'San Luis', 10, NULL, NULL),
-(227, 'Santa Cruz', 10, NULL, NULL),
-(228, 'Santa Fe', 10, NULL, NULL),
-(229, 'Santiago del Estero', 10, NULL, NULL),
-(230, 'Tierra del Fuego', 10, NULL, NULL),
-(231, 'Tucuman', 10, NULL, NULL),
-(232, 'Aragatsotn', 11, NULL, NULL),
-(233, 'Ararat', 11, NULL, NULL),
-(234, 'Armavir', 11, NULL, NULL),
-(235, 'Gegharkunik', 11, NULL, NULL),
-(236, 'Kotaik', 11, NULL, NULL),
-(237, 'Lori', 11, NULL, NULL),
-(238, 'Shirak', 11, NULL, NULL),
-(239, 'Stepanakert', 11, NULL, NULL),
-(240, 'Syunik', 11, NULL, NULL),
-(241, 'Tavush', 11, NULL, NULL),
-(242, 'Vayots Dzor', 11, NULL, NULL),
-(243, 'Yerevan', 11, NULL, NULL),
-(244, 'Aruba', 12, NULL, NULL),
-(245, 'Auckland', 13, NULL, NULL),
-(246, 'Australian Capital Territory', 13, NULL, NULL),
-(247, 'Balgowlah', 13, NULL, NULL),
-(248, 'Balmain', 13, NULL, NULL),
-(249, 'Bankstown', 13, NULL, NULL),
-(250, 'Baulkham Hills', 13, NULL, NULL),
-(251, 'Bonnet Bay', 13, NULL, NULL),
-(252, 'Camberwell', 13, NULL, NULL),
-(253, 'Carole Park', 13, NULL, NULL),
-(254, 'Castle Hill', 13, NULL, NULL),
-(255, 'Caulfield', 13, NULL, NULL),
-(256, 'Chatswood', 13, NULL, NULL),
-(257, 'Cheltenham', 13, NULL, NULL),
-(258, 'Cherrybrook', 13, NULL, NULL),
-(259, 'Clayton', 13, NULL, NULL),
-(260, 'Collingwood', 13, NULL, NULL),
-(261, 'Frenchs Forest', 13, NULL, NULL),
-(262, 'Hawthorn', 13, NULL, NULL),
-(263, 'Jannnali', 13, NULL, NULL),
-(264, 'Knoxfield', 13, NULL, NULL),
-(265, 'Melbourne', 13, NULL, NULL),
-(266, 'New South Wales', 13, NULL, NULL),
-(267, 'Northern Territory', 13, NULL, NULL),
-(268, 'Perth', 13, NULL, NULL),
-(269, 'Queensland', 13, NULL, NULL),
-(270, 'South Australia', 13, NULL, NULL),
-(271, 'Tasmania', 13, NULL, NULL),
-(272, 'Templestowe', 13, NULL, NULL),
-(273, 'Victoria', 13, NULL, NULL),
-(274, 'Werribee south', 13, NULL, NULL),
-(275, 'Western Australia', 13, NULL, NULL),
-(276, 'Wheeler', 13, NULL, NULL),
-(277, 'Bundesland Salzburg', 14, NULL, NULL),
-(278, 'Bundesland Steiermark', 14, NULL, NULL),
-(279, 'Bundesland Tirol', 14, NULL, NULL),
-(280, 'Burgenland', 14, NULL, NULL),
-(281, 'Carinthia', 14, NULL, NULL),
-(282, 'Karnten', 14, NULL, NULL),
-(283, 'Liezen', 14, NULL, NULL),
-(284, 'Lower Austria', 14, NULL, NULL),
-(285, 'Niederosterreich', 14, NULL, NULL),
-(286, 'Oberosterreich', 14, NULL, NULL),
-(287, 'Salzburg', 14, NULL, NULL),
-(288, 'Schleswig-Holstein', 14, NULL, NULL),
-(289, 'Steiermark', 14, NULL, NULL),
-(290, 'Styria', 14, NULL, NULL),
-(291, 'Tirol', 14, NULL, NULL),
-(292, 'Upper Austria', 14, NULL, NULL),
-(293, 'Vorarlberg', 14, NULL, NULL),
-(294, 'Wien', 14, NULL, NULL),
-(295, 'Abseron', 15, NULL, NULL),
-(296, 'Baki Sahari', 15, NULL, NULL),
-(297, 'Ganca', 15, NULL, NULL),
-(298, 'Ganja', 15, NULL, NULL),
-(299, 'Kalbacar', 15, NULL, NULL),
-(300, 'Lankaran', 15, NULL, NULL),
-(301, 'Mil-Qarabax', 15, NULL, NULL),
-(302, 'Mugan-Salyan', 15, NULL, NULL),
-(303, 'Nagorni-Qarabax', 15, NULL, NULL),
-(304, 'Naxcivan', 15, NULL, NULL),
-(305, 'Priaraks', 15, NULL, NULL),
-(306, 'Qazax', 15, NULL, NULL),
-(307, 'Saki', 15, NULL, NULL),
-(308, 'Sirvan', 15, NULL, NULL),
-(309, 'Xacmaz', 15, NULL, NULL),
-(310, 'Abaco', 16, NULL, NULL),
-(311, 'Acklins Island', 16, NULL, NULL),
-(312, 'Andros', 16, NULL, NULL),
-(313, 'Berry Islands', 16, NULL, NULL),
-(314, 'Biminis', 16, NULL, NULL),
-(315, 'Cat Island', 16, NULL, NULL),
-(316, 'Crooked Island', 16, NULL, NULL),
-(317, 'Eleuthera', 16, NULL, NULL),
-(318, 'Exuma and Cays', 16, NULL, NULL),
-(319, 'Grand Bahama', 16, NULL, NULL),
-(320, 'Inagua Islands', 16, NULL, NULL),
-(321, 'Long Island', 16, NULL, NULL),
-(322, 'Mayaguana', 16, NULL, NULL),
-(323, 'New Providence', 16, NULL, NULL),
-(324, 'Ragged Island', 16, NULL, NULL),
-(325, 'Rum Cay', 16, NULL, NULL),
-(326, 'San Salvador', 16, NULL, NULL),
-(327, 'Isa', 17, NULL, NULL),
-(328, 'Badiyah', 17, NULL, NULL),
-(329, 'Hidd', 17, NULL, NULL),
-(330, 'Jidd Hafs', 17, NULL, NULL),
-(331, 'Mahama', 17, NULL, NULL),
-(332, 'Manama', 17, NULL, NULL),
-(333, 'Sitrah', 17, NULL, NULL),
-(334, 'al-Manamah', 17, NULL, NULL),
-(335, 'al-Muharraq', 17, NULL, NULL),
-(336, 'ar-Rifa\'\'a', 17, NULL, NULL),
-(337, 'Bagar Hat', 18, NULL, NULL),
-(338, 'Bandarban', 18, NULL, NULL),
-(339, 'Barguna', 18, NULL, NULL),
-(340, 'Barisal', 18, NULL, NULL),
-(341, 'Bhola', 18, NULL, NULL),
-(342, 'Bogora', 18, NULL, NULL),
-(343, 'Brahman Bariya', 18, NULL, NULL),
-(344, 'Chandpur', 18, NULL, NULL),
-(345, 'Chattagam', 18, NULL, NULL),
-(346, 'Chittagong Division', 18, NULL, NULL),
-(347, 'Chuadanga', 18, NULL, NULL),
-(348, 'Dhaka', 18, NULL, NULL),
-(349, 'Dinajpur', 18, NULL, NULL),
-(350, 'Faridpur', 18, NULL, NULL),
-(351, 'Feni', 18, NULL, NULL),
-(352, 'Gaybanda', 18, NULL, NULL),
-(353, 'Gazipur', 18, NULL, NULL),
-(354, 'Gopalganj', 18, NULL, NULL),
-(355, 'Habiganj', 18, NULL, NULL),
-(356, 'Jaipur Hat', 18, NULL, NULL),
-(357, 'Jamalpur', 18, NULL, NULL),
-(358, 'Jessor', 18, NULL, NULL),
-(359, 'Jhalakati', 18, NULL, NULL),
-(360, 'Jhanaydah', 18, NULL, NULL),
-(361, 'Khagrachhari', 18, NULL, NULL),
-(362, 'Khulna', 18, NULL, NULL),
-(363, 'Kishorganj', 18, NULL, NULL),
-(364, 'Koks Bazar', 18, NULL, NULL),
-(365, 'Komilla', 18, NULL, NULL),
-(366, 'Kurigram', 18, NULL, NULL),
-(367, 'Kushtiya', 18, NULL, NULL),
-(368, 'Lakshmipur', 18, NULL, NULL),
-(369, 'Lalmanir Hat', 18, NULL, NULL),
-(370, 'Madaripur', 18, NULL, NULL),
-(371, 'Magura', 18, NULL, NULL),
-(372, 'Maimansingh', 18, NULL, NULL),
-(373, 'Manikganj', 18, NULL, NULL),
-(374, 'Maulvi Bazar', 18, NULL, NULL),
-(375, 'Meherpur', 18, NULL, NULL),
-(376, 'Munshiganj', 18, NULL, NULL),
-(377, 'Naral', 18, NULL, NULL),
-(378, 'Narayanganj', 18, NULL, NULL),
-(379, 'Narsingdi', 18, NULL, NULL),
-(380, 'Nator', 18, NULL, NULL),
-(381, 'Naugaon', 18, NULL, NULL),
-(382, 'Nawabganj', 18, NULL, NULL),
-(383, 'Netrakona', 18, NULL, NULL),
-(384, 'Nilphamari', 18, NULL, NULL),
-(385, 'Noakhali', 18, NULL, NULL),
-(386, 'Pabna', 18, NULL, NULL),
-(387, 'Panchagarh', 18, NULL, NULL),
-(388, 'Patuakhali', 18, NULL, NULL),
-(389, 'Pirojpur', 18, NULL, NULL),
-(390, 'Rajbari', 18, NULL, NULL),
-(391, 'Rajshahi', 18, NULL, NULL),
-(392, 'Rangamati', 18, NULL, NULL),
-(393, 'Rangpur', 18, NULL, NULL),
-(394, 'Satkhira', 18, NULL, NULL),
-(395, 'Shariatpur', 18, NULL, NULL),
-(396, 'Sherpur', 18, NULL, NULL),
-(397, 'Silhat', 18, NULL, NULL),
-(398, 'Sirajganj', 18, NULL, NULL),
-(399, 'Sunamganj', 18, NULL, NULL),
-(400, 'Tangayal', 18, NULL, NULL),
-(401, 'Thakurgaon', 18, NULL, NULL),
-(402, 'Christ Church', 19, NULL, NULL),
-(403, 'Saint Andrew', 19, NULL, NULL),
-(404, 'Saint George', 19, NULL, NULL),
-(405, 'Saint James', 19, NULL, NULL),
-(406, 'Saint John', 19, NULL, NULL),
-(407, 'Saint Joseph', 19, NULL, NULL),
-(408, 'Saint Lucy', 19, NULL, NULL),
-(409, 'Saint Michael', 19, NULL, NULL),
-(410, 'Saint Peter', 19, NULL, NULL),
-(411, 'Saint Philip', 19, NULL, NULL),
-(412, 'Saint Thomas', 19, NULL, NULL),
-(413, 'Brest', 20, NULL, NULL),
-(414, 'Homjel', 20, NULL, NULL),
-(415, 'Hrodna', 20, NULL, NULL),
-(416, 'Mahiljow', 20, NULL, NULL),
-(417, 'Mahilyowskaya Voblasts', 20, NULL, NULL),
-(418, 'Minsk', 20, NULL, NULL),
-(419, 'Minskaja Voblasts', 20, NULL, NULL),
-(420, 'Petrik', 20, NULL, NULL),
-(421, 'Vicebsk', 20, NULL, NULL),
-(422, 'Antwerpen', 21, NULL, NULL),
-(423, 'Berchem', 21, NULL, NULL),
-(424, 'Brabant', 21, NULL, NULL),
-(425, 'Brabant Wallon', 21, NULL, NULL),
-(426, 'Brussel', 21, NULL, NULL),
-(427, 'East Flanders', 21, NULL, NULL),
-(428, 'Hainaut', 21, NULL, NULL),
-(429, 'Liege', 21, NULL, NULL),
-(430, 'Limburg', 21, NULL, NULL),
-(431, 'Luxembourg', 21, NULL, NULL),
-(432, 'Namur', 21, NULL, NULL),
-(433, 'Ontario', 21, NULL, NULL),
-(434, 'Oost-Vlaanderen', 21, NULL, NULL),
-(435, 'Provincie Brabant', 21, NULL, NULL),
-(436, 'Vlaams-Brabant', 21, NULL, NULL),
-(437, 'Wallonne', 21, NULL, NULL),
-(438, 'West-Vlaanderen', 21, NULL, NULL),
-(439, 'Belize', 22, NULL, NULL),
-(440, 'Cayo', 22, NULL, NULL),
-(441, 'Corozal', 22, NULL, NULL),
-(442, 'Orange Walk', 22, NULL, NULL),
-(443, 'Stann Creek', 22, NULL, NULL),
-(444, 'Toledo', 22, NULL, NULL),
-(445, 'Alibori', 23, NULL, NULL),
-(446, 'Atacora', 23, NULL, NULL),
-(447, 'Atlantique', 23, NULL, NULL),
-(448, 'Borgou', 23, NULL, NULL),
-(449, 'Collines', 23, NULL, NULL),
-(450, 'Couffo', 23, NULL, NULL),
-(451, 'Donga', 23, NULL, NULL),
-(452, 'Littoral', 23, NULL, NULL),
-(453, 'Mono', 23, NULL, NULL),
-(454, 'Oueme', 23, NULL, NULL),
-(455, 'Plateau', 23, NULL, NULL),
-(456, 'Zou', 23, NULL, NULL),
-(457, 'Hamilton', 24, NULL, NULL),
-(458, 'Saint George', 24, NULL, NULL),
-(459, 'Bumthang', 25, NULL, NULL),
-(460, 'Chhukha', 25, NULL, NULL),
-(461, 'Chirang', 25, NULL, NULL),
-(462, 'Daga', 25, NULL, NULL),
-(463, 'Geylegphug', 25, NULL, NULL),
-(464, 'Ha', 25, NULL, NULL),
-(465, 'Lhuntshi', 25, NULL, NULL),
-(466, 'Mongar', 25, NULL, NULL),
-(467, 'Pemagatsel', 25, NULL, NULL),
-(468, 'Punakha', 25, NULL, NULL),
-(469, 'Rinpung', 25, NULL, NULL),
-(470, 'Samchi', 25, NULL, NULL),
-(471, 'Samdrup Jongkhar', 25, NULL, NULL),
-(472, 'Shemgang', 25, NULL, NULL),
-(473, 'Tashigang', 25, NULL, NULL),
-(474, 'Timphu', 25, NULL, NULL),
-(475, 'Tongsa', 25, NULL, NULL),
-(476, 'Wangdiphodrang', 25, NULL, NULL),
-(477, 'Beni', 26, NULL, NULL),
-(478, 'Chuquisaca', 26, NULL, NULL),
-(479, 'Cochabamba', 26, NULL, NULL),
-(480, 'La Paz', 26, NULL, NULL),
-(481, 'Oruro', 26, NULL, NULL),
-(482, 'Pando', 26, NULL, NULL),
-(483, 'Potosi', 26, NULL, NULL),
-(484, 'Santa Cruz', 26, NULL, NULL),
-(485, 'Tarija', 26, NULL, NULL),
-(486, 'Federacija Bosna i Hercegovina', 27, NULL, NULL),
-(487, 'Republika Srpska', 27, NULL, NULL),
-(488, 'Central Bobonong', 28, NULL, NULL),
-(489, 'Central Boteti', 28, NULL, NULL),
-(490, 'Central Mahalapye', 28, NULL, NULL),
-(491, 'Central Serowe-Palapye', 28, NULL, NULL),
-(492, 'Central Tutume', 28, NULL, NULL),
-(493, 'Chobe', 28, NULL, NULL),
-(494, 'Francistown', 28, NULL, NULL),
-(495, 'Gaborone', 28, NULL, NULL),
-(496, 'Ghanzi', 28, NULL, NULL),
-(497, 'Jwaneng', 28, NULL, NULL),
-(498, 'Kgalagadi North', 28, NULL, NULL),
-(499, 'Kgalagadi South', 28, NULL, NULL),
-(500, 'Kgatleng', 28, NULL, NULL),
-(501, 'Kweneng', 28, NULL, NULL),
-(502, 'Lobatse', 28, NULL, NULL),
-(503, 'Ngamiland', 28, NULL, NULL),
-(504, 'Ngwaketse', 28, NULL, NULL),
-(505, 'North East', 28, NULL, NULL),
-(506, 'Okavango', 28, NULL, NULL),
-(507, 'Orapa', 28, NULL, NULL),
-(508, 'Selibe Phikwe', 28, NULL, NULL),
-(509, 'South East', 28, NULL, NULL),
-(510, 'Sowa', 28, NULL, NULL),
-(511, 'Bouvet Island', 29, NULL, NULL),
-(512, 'Acre', 30, NULL, NULL),
-(513, 'Alagoas', 30, NULL, NULL),
-(514, 'Amapa', 30, NULL, NULL),
-(515, 'Amazonas', 30, NULL, NULL),
-(516, 'Bahia', 30, NULL, NULL),
-(517, 'Ceara', 30, NULL, NULL),
-(518, 'Distrito Federal', 30, NULL, NULL),
-(519, 'Espirito Santo', 30, NULL, NULL),
-(520, 'Estado de Sao Paulo', 30, NULL, NULL),
-(521, 'Goias', 30, NULL, NULL),
-(522, 'Maranhao', 30, NULL, NULL),
-(523, 'Mato Grosso', 30, NULL, NULL),
-(524, 'Mato Grosso do Sul', 30, NULL, NULL),
-(525, 'Minas Gerais', 30, NULL, NULL),
-(526, 'Para', 30, NULL, NULL),
-(527, 'Paraiba', 30, NULL, NULL),
-(528, 'Parana', 30, NULL, NULL),
-(529, 'Pernambuco', 30, NULL, NULL),
-(530, 'Piaui', 30, NULL, NULL),
-(531, 'Rio Grande do Norte', 30, NULL, NULL),
-(532, 'Rio Grande do Sul', 30, NULL, NULL),
-(533, 'Rio de Janeiro', 30, NULL, NULL),
-(534, 'Rondonia', 30, NULL, NULL),
-(535, 'Roraima', 30, NULL, NULL),
-(536, 'Santa Catarina', 30, NULL, NULL),
-(537, 'Sao Paulo', 30, NULL, NULL),
-(538, 'Sergipe', 30, NULL, NULL),
-(539, 'Tocantins', 30, NULL, NULL),
-(540, 'British Indian Ocean Territory', 31, NULL, NULL),
-(541, 'Belait', 32, NULL, NULL),
-(542, 'Brunei-Muara', 32, NULL, NULL),
-(543, 'Temburong', 32, NULL, NULL),
-(544, 'Tutong', 32, NULL, NULL),
-(545, 'Blagoevgrad', 33, NULL, NULL),
-(546, 'Burgas', 33, NULL, NULL),
-(547, 'Dobrich', 33, NULL, NULL),
-(548, 'Gabrovo', 33, NULL, NULL),
-(549, 'Haskovo', 33, NULL, NULL),
-(550, 'Jambol', 33, NULL, NULL),
-(551, 'Kardzhali', 33, NULL, NULL),
-(552, 'Kjustendil', 33, NULL, NULL),
-(553, 'Lovech', 33, NULL, NULL),
-(554, 'Montana', 33, NULL, NULL),
-(555, 'Oblast Sofiya-Grad', 33, NULL, NULL),
-(556, 'Pazardzhik', 33, NULL, NULL),
-(557, 'Pernik', 33, NULL, NULL),
-(558, 'Pleven', 33, NULL, NULL),
-(559, 'Plovdiv', 33, NULL, NULL),
-(560, 'Razgrad', 33, NULL, NULL),
-(561, 'Ruse', 33, NULL, NULL),
-(562, 'Shumen', 33, NULL, NULL),
-(563, 'Silistra', 33, NULL, NULL),
-(564, 'Sliven', 33, NULL, NULL),
-(565, 'Smoljan', 33, NULL, NULL),
-(566, 'Sofija grad', 33, NULL, NULL),
-(567, 'Sofijska oblast', 33, NULL, NULL),
-(568, 'Stara Zagora', 33, NULL, NULL),
-(569, 'Targovishte', 33, NULL, NULL),
-(570, 'Varna', 33, NULL, NULL),
-(571, 'Veliko Tarnovo', 33, NULL, NULL),
-(572, 'Vidin', 33, NULL, NULL),
-(573, 'Vraca', 33, NULL, NULL),
-(574, 'Yablaniza', 33, NULL, NULL),
-(575, 'Bale', 34, NULL, NULL),
-(576, 'Bam', 34, NULL, NULL),
-(577, 'Bazega', 34, NULL, NULL),
-(578, 'Bougouriba', 34, NULL, NULL),
-(579, 'Boulgou', 34, NULL, NULL),
-(580, 'Boulkiemde', 34, NULL, NULL),
-(581, 'Comoe', 34, NULL, NULL),
-(582, 'Ganzourgou', 34, NULL, NULL),
-(583, 'Gnagna', 34, NULL, NULL),
-(584, 'Gourma', 34, NULL, NULL),
-(585, 'Houet', 34, NULL, NULL),
-(586, 'Ioba', 34, NULL, NULL),
-(587, 'Kadiogo', 34, NULL, NULL),
-(588, 'Kenedougou', 34, NULL, NULL),
-(589, 'Komandjari', 34, NULL, NULL),
-(590, 'Kompienga', 34, NULL, NULL),
-(591, 'Kossi', 34, NULL, NULL),
-(592, 'Kouritenga', 34, NULL, NULL),
-(593, 'Kourweogo', 34, NULL, NULL),
-(594, 'Leraba', 34, NULL, NULL),
-(595, 'Mouhoun', 34, NULL, NULL),
-(596, 'Nahouri', 34, NULL, NULL),
-(597, 'Namentenga', 34, NULL, NULL),
-(598, 'Noumbiel', 34, NULL, NULL),
-(599, 'Oubritenga', 34, NULL, NULL),
-(600, 'Oudalan', 34, NULL, NULL),
-(601, 'Passore', 34, NULL, NULL),
-(602, 'Poni', 34, NULL, NULL),
-(603, 'Sanguie', 34, NULL, NULL),
-(604, 'Sanmatenga', 34, NULL, NULL),
-(605, 'Seno', 34, NULL, NULL),
-(606, 'Sissili', 34, NULL, NULL),
-(607, 'Soum', 34, NULL, NULL),
-(608, 'Sourou', 34, NULL, NULL),
-(609, 'Tapoa', 34, NULL, NULL),
-(610, 'Tuy', 34, NULL, NULL),
-(611, 'Yatenga', 34, NULL, NULL),
-(612, 'Zondoma', 34, NULL, NULL),
-(613, 'Zoundweogo', 34, NULL, NULL),
-(614, 'Bubanza', 35, NULL, NULL),
-(615, 'Bujumbura', 35, NULL, NULL),
-(616, 'Bururi', 35, NULL, NULL),
-(617, 'Cankuzo', 35, NULL, NULL),
-(618, 'Cibitoke', 35, NULL, NULL),
-(619, 'Gitega', 35, NULL, NULL),
-(620, 'Karuzi', 35, NULL, NULL),
-(621, 'Kayanza', 35, NULL, NULL),
-(622, 'Kirundo', 35, NULL, NULL),
-(623, 'Makamba', 35, NULL, NULL),
-(624, 'Muramvya', 35, NULL, NULL),
-(625, 'Muyinga', 35, NULL, NULL),
-(626, 'Ngozi', 35, NULL, NULL),
-(627, 'Rutana', 35, NULL, NULL),
-(628, 'Ruyigi', 35, NULL, NULL),
-(629, 'Banteay Mean Chey', 36, NULL, NULL),
-(630, 'Bat Dambang', 36, NULL, NULL),
-(631, 'Kampong Cham', 36, NULL, NULL),
-(632, 'Kampong Chhnang', 36, NULL, NULL),
-(633, 'Kampong Spoeu', 36, NULL, NULL),
-(634, 'Kampong Thum', 36, NULL, NULL),
-(635, 'Kampot', 36, NULL, NULL),
-(636, 'Kandal', 36, NULL, NULL),
-(637, 'Kaoh Kong', 36, NULL, NULL),
-(638, 'Kracheh', 36, NULL, NULL),
-(639, 'Krong Kaeb', 36, NULL, NULL),
-(640, 'Krong Pailin', 36, NULL, NULL),
-(641, 'Krong Preah Sihanouk', 36, NULL, NULL),
-(642, 'Mondol Kiri', 36, NULL, NULL),
-(643, 'Otdar Mean Chey', 36, NULL, NULL),
-(644, 'Phnum Penh', 36, NULL, NULL),
-(645, 'Pousat', 36, NULL, NULL),
-(646, 'Preah Vihear', 36, NULL, NULL),
-(647, 'Prey Veaeng', 36, NULL, NULL),
-(648, 'Rotanak Kiri', 36, NULL, NULL),
-(649, 'Siem Reab', 36, NULL, NULL),
-(650, 'Stueng Traeng', 36, NULL, NULL),
-(651, 'Svay Rieng', 36, NULL, NULL),
-(652, 'Takaev', 36, NULL, NULL),
-(653, 'Adamaoua', 37, NULL, NULL),
-(654, 'Centre', 37, NULL, NULL),
-(655, 'Est', 37, NULL, NULL),
-(656, 'Littoral', 37, NULL, NULL),
-(657, 'Nord', 37, NULL, NULL),
-(658, 'Nord Extreme', 37, NULL, NULL),
-(659, 'Nordouest', 37, NULL, NULL),
-(660, 'Ouest', 37, NULL, NULL),
-(661, 'Sud', 37, NULL, NULL),
-(662, 'Sudouest', 37, NULL, NULL),
-(663, 'Alberta', 38, NULL, NULL),
-(664, 'British Columbia', 38, NULL, NULL),
-(665, 'Manitoba', 38, NULL, NULL),
-(666, 'New Brunswick', 38, NULL, NULL),
-(667, 'Newfoundland and Labrador', 38, NULL, NULL),
-(668, 'Northwest Territories', 38, NULL, NULL),
-(669, 'Nova Scotia', 38, NULL, NULL),
-(670, 'Nunavut', 38, NULL, NULL),
-(671, 'Ontario', 38, NULL, NULL),
-(672, 'Prince Edward Island', 38, NULL, NULL),
-(673, 'Quebec', 38, NULL, NULL),
-(674, 'Saskatchewan', 38, NULL, NULL),
-(675, 'Yukon', 38, NULL, NULL),
-(676, 'Boavista', 39, NULL, NULL),
-(677, 'Brava', 39, NULL, NULL),
-(678, 'Fogo', 39, NULL, NULL),
-(679, 'Maio', 39, NULL, NULL),
-(680, 'Sal', 39, NULL, NULL),
-(681, 'Santo Antao', 39, NULL, NULL),
-(682, 'Sao Nicolau', 39, NULL, NULL),
-(683, 'Sao Tiago', 39, NULL, NULL),
-(684, 'Sao Vicente', 39, NULL, NULL),
-(685, 'Grand Cayman', 40, NULL, NULL),
-(686, 'Bamingui-Bangoran', 41, NULL, NULL),
-(687, 'Bangui', 41, NULL, NULL),
-(688, 'Basse-Kotto', 41, NULL, NULL),
-(689, 'Haut-Mbomou', 41, NULL, NULL),
-(690, 'Haute-Kotto', 41, NULL, NULL),
-(691, 'Kemo', 41, NULL, NULL),
-(692, 'Lobaye', 41, NULL, NULL),
-(693, 'Mambere-Kadei', 41, NULL, NULL),
-(694, 'Mbomou', 41, NULL, NULL),
-(695, 'Nana-Gribizi', 41, NULL, NULL),
-(696, 'Nana-Mambere', 41, NULL, NULL),
-(697, 'Ombella Mpoko', 41, NULL, NULL),
-(698, 'Ouaka', 41, NULL, NULL),
-(699, 'Ouham', 41, NULL, NULL),
-(700, 'Ouham-Pende', 41, NULL, NULL),
-(701, 'Sangha-Mbaere', 41, NULL, NULL),
-(702, 'Vakaga', 41, NULL, NULL),
-(703, 'Batha', 42, NULL, NULL),
-(704, 'Biltine', 42, NULL, NULL),
-(705, 'Bourkou-Ennedi-Tibesti', 42, NULL, NULL),
-(706, 'Chari-Baguirmi', 42, NULL, NULL),
-(707, 'Guera', 42, NULL, NULL),
-(708, 'Kanem', 42, NULL, NULL),
-(709, 'Lac', 42, NULL, NULL),
-(710, 'Logone Occidental', 42, NULL, NULL),
-(711, 'Logone Oriental', 42, NULL, NULL),
-(712, 'Mayo-Kebbi', 42, NULL, NULL),
-(713, 'Moyen-Chari', 42, NULL, NULL),
-(714, 'Ouaddai', 42, NULL, NULL),
-(715, 'Salamat', 42, NULL, NULL),
-(716, 'Tandjile', 42, NULL, NULL),
-(717, 'Aisen', 43, NULL, NULL),
-(718, 'Antofagasta', 43, NULL, NULL),
-(719, 'Araucania', 43, NULL, NULL),
-(720, 'Atacama', 43, NULL, NULL),
-(721, 'Bio Bio', 43, NULL, NULL),
-(722, 'Coquimbo', 43, NULL, NULL),
-(723, 'Libertador General Bernardo O', 43, NULL, NULL),
-(724, 'Los Lagos', 43, NULL, NULL),
-(725, 'Magellanes', 43, NULL, NULL),
-(726, 'Maule', 43, NULL, NULL),
-(727, 'Metropolitana', 43, NULL, NULL),
-(728, 'Metropolitana de Santiago', 43, NULL, NULL),
-(729, 'Tarapaca', 43, NULL, NULL),
-(730, 'Valparaiso', 43, NULL, NULL),
-(731, 'Anhui', 44, NULL, NULL),
-(732, 'Anhui Province', 44, NULL, NULL),
-(733, 'Anhui Sheng', 44, NULL, NULL),
-(734, 'Aomen', 44, NULL, NULL),
-(735, 'Beijing', 44, NULL, NULL),
-(736, 'Beijing Shi', 44, NULL, NULL),
-(737, 'Chongqing', 44, NULL, NULL),
-(738, 'Fujian', 44, NULL, NULL),
-(739, 'Fujian Sheng', 44, NULL, NULL),
-(740, 'Gansu', 44, NULL, NULL),
-(741, 'Guangdong', 44, NULL, NULL),
-(742, 'Guangdong Sheng', 44, NULL, NULL),
-(743, 'Guangxi', 44, NULL, NULL),
-(744, 'Guizhou', 44, NULL, NULL),
-(745, 'Hainan', 44, NULL, NULL),
-(746, 'Hebei', 44, NULL, NULL),
-(747, 'Heilongjiang', 44, NULL, NULL),
-(748, 'Henan', 44, NULL, NULL),
-(749, 'Hubei', 44, NULL, NULL),
-(750, 'Hunan', 44, NULL, NULL),
-(751, 'Jiangsu', 44, NULL, NULL),
-(752, 'Jiangsu Sheng', 44, NULL, NULL),
-(753, 'Jiangxi', 44, NULL, NULL),
-(754, 'Jilin', 44, NULL, NULL),
-(755, 'Liaoning', 44, NULL, NULL),
-(756, 'Liaoning Sheng', 44, NULL, NULL),
-(757, 'Nei Monggol', 44, NULL, NULL),
-(758, 'Ningxia Hui', 44, NULL, NULL),
-(759, 'Qinghai', 44, NULL, NULL),
-(760, 'Shaanxi', 44, NULL, NULL),
-(761, 'Shandong', 44, NULL, NULL),
-(762, 'Shandong Sheng', 44, NULL, NULL),
-(763, 'Shanghai', 44, NULL, NULL),
-(764, 'Shanxi', 44, NULL, NULL),
-(765, 'Sichuan', 44, NULL, NULL),
-(766, 'Tianjin', 44, NULL, NULL),
-(767, 'Xianggang', 44, NULL, NULL),
-(768, 'Xinjiang', 44, NULL, NULL),
-(769, 'Xizang', 44, NULL, NULL),
-(770, 'Yunnan', 44, NULL, NULL),
-(771, 'Zhejiang', 44, NULL, NULL),
-(772, 'Zhejiang Sheng', 44, NULL, NULL),
-(773, 'Christmas Island', 45, NULL, NULL),
-(774, 'Cocos (Keeling) Islands', 46, NULL, NULL),
-(775, 'Amazonas', 47, NULL, NULL),
-(776, 'Antioquia', 47, NULL, NULL),
-(777, 'Arauca', 47, NULL, NULL),
-(778, 'Atlantico', 47, NULL, NULL),
-(779, 'Bogota', 47, NULL, NULL),
-(780, 'Bolivar', 47, NULL, NULL),
-(781, 'Boyaca', 47, NULL, NULL),
-(782, 'Caldas', 47, NULL, NULL),
-(783, 'Caqueta', 47, NULL, NULL),
-(784, 'Casanare', 47, NULL, NULL),
-(785, 'Cauca', 47, NULL, NULL),
-(786, 'Cesar', 47, NULL, NULL),
-(787, 'Choco', 47, NULL, NULL),
-(788, 'Cordoba', 47, NULL, NULL),
-(789, 'Cundinamarca', 47, NULL, NULL),
-(790, 'Guainia', 47, NULL, NULL),
-(791, 'Guaviare', 47, NULL, NULL),
-(792, 'Huila', 47, NULL, NULL),
-(793, 'La Guajira', 47, NULL, NULL),
-(794, 'Magdalena', 47, NULL, NULL),
-(795, 'Meta', 47, NULL, NULL),
-(796, 'Narino', 47, NULL, NULL),
-(797, 'Norte de Santander', 47, NULL, NULL),
-(798, 'Putumayo', 47, NULL, NULL),
-(799, 'Quindio', 47, NULL, NULL),
-(800, 'Risaralda', 47, NULL, NULL),
-(801, 'San Andres y Providencia', 47, NULL, NULL),
-(802, 'Santander', 47, NULL, NULL),
-(803, 'Sucre', 47, NULL, NULL),
-(804, 'Tolima', 47, NULL, NULL),
-(805, 'Valle del Cauca', 47, NULL, NULL),
-(806, 'Vaupes', 47, NULL, NULL),
-(807, 'Vichada', 47, NULL, NULL),
-(808, 'Mwali', 48, NULL, NULL),
-(809, 'Njazidja', 48, NULL, NULL),
-(810, 'Nzwani', 48, NULL, NULL),
-(811, 'Bouenza', 49, NULL, NULL),
-(812, 'Brazzaville', 49, NULL, NULL),
-(813, 'Cuvette', 49, NULL, NULL),
-(814, 'Kouilou', 49, NULL, NULL),
-(815, 'Lekoumou', 49, NULL, NULL),
-(816, 'Likouala', 49, NULL, NULL),
-(817, 'Niari', 49, NULL, NULL),
-(818, 'Plateaux', 49, NULL, NULL),
-(819, 'Pool', 49, NULL, NULL),
-(820, 'Sangha', 49, NULL, NULL),
-(821, 'Bandundu', 50, NULL, NULL),
-(822, 'Bas-Congo', 50, NULL, NULL),
-(823, 'Equateur', 50, NULL, NULL),
-(824, 'Haut-Congo', 50, NULL, NULL),
-(825, 'Kasai-Occidental', 50, NULL, NULL),
-(826, 'Kasai-Oriental', 50, NULL, NULL),
-(827, 'Katanga', 50, NULL, NULL),
-(828, 'Kinshasa', 50, NULL, NULL),
-(829, 'Maniema', 50, NULL, NULL),
-(830, 'Nord-Kivu', 50, NULL, NULL),
-(831, 'Sud-Kivu', 50, NULL, NULL),
-(832, 'Aitutaki', 51, NULL, NULL),
-(833, 'Atiu', 51, NULL, NULL),
-(834, 'Mangaia', 51, NULL, NULL),
-(835, 'Manihiki', 51, NULL, NULL),
-(836, 'Mauke', 51, NULL, NULL),
-(837, 'Mitiaro', 51, NULL, NULL),
-(838, 'Nassau', 51, NULL, NULL),
-(839, 'Pukapuka', 51, NULL, NULL),
-(840, 'Rakahanga', 51, NULL, NULL),
-(841, 'Rarotonga', 51, NULL, NULL),
-(842, 'Tongareva', 51, NULL, NULL),
-(843, 'Alajuela', 52, NULL, NULL),
-(844, 'Cartago', 52, NULL, NULL),
-(845, 'Guanacaste', 52, NULL, NULL),
-(846, 'Heredia', 52, NULL, NULL),
-(847, 'Limon', 52, NULL, NULL),
-(848, 'Puntarenas', 52, NULL, NULL),
-(849, 'San Jose', 52, NULL, NULL),
-(850, 'Abidjan', 53, NULL, NULL),
-(851, 'Agneby', 53, NULL, NULL),
-(852, 'Bafing', 53, NULL, NULL),
-(853, 'Denguele', 53, NULL, NULL),
-(854, 'Dix-huit Montagnes', 53, NULL, NULL),
-(855, 'Fromager', 53, NULL, NULL),
-(856, 'Haut-Sassandra', 53, NULL, NULL),
-(857, 'Lacs', 53, NULL, NULL),
-(858, 'Lagunes', 53, NULL, NULL),
-(859, 'Marahoue', 53, NULL, NULL),
-(860, 'Moyen-Cavally', 53, NULL, NULL),
-(861, 'Moyen-Comoe', 53, NULL, NULL),
-(862, 'N\'\'zi-Comoe', 53, NULL, NULL),
-(863, 'Sassandra', 53, NULL, NULL),
-(864, 'Savanes', 53, NULL, NULL),
-(865, 'Sud-Bandama', 53, NULL, NULL),
-(866, 'Sud-Comoe', 53, NULL, NULL),
-(867, 'Vallee du Bandama', 53, NULL, NULL),
-(868, 'Worodougou', 53, NULL, NULL),
-(869, 'Zanzan', 53, NULL, NULL),
-(870, 'Bjelovar-Bilogora', 54, NULL, NULL),
-(871, 'Dubrovnik-Neretva', 54, NULL, NULL),
-(872, 'Grad Zagreb', 54, NULL, NULL),
-(873, 'Istra', 54, NULL, NULL),
-(874, 'Karlovac', 54, NULL, NULL),
-(875, 'Koprivnica-Krizhevci', 54, NULL, NULL),
-(876, 'Krapina-Zagorje', 54, NULL, NULL),
-(877, 'Lika-Senj', 54, NULL, NULL),
-(878, 'Medhimurje', 54, NULL, NULL),
-(879, 'Medimurska Zupanija', 54, NULL, NULL),
-(880, 'Osijek-Baranja', 54, NULL, NULL),
-(881, 'Osjecko-Baranjska Zupanija', 54, NULL, NULL),
-(882, 'Pozhega-Slavonija', 54, NULL, NULL),
-(883, 'Primorje-Gorski Kotar', 54, NULL, NULL),
-(884, 'Shibenik-Knin', 54, NULL, NULL),
-(885, 'Sisak-Moslavina', 54, NULL, NULL),
-(886, 'Slavonski Brod-Posavina', 54, NULL, NULL),
-(887, 'Split-Dalmacija', 54, NULL, NULL),
-(888, 'Varazhdin', 54, NULL, NULL),
-(889, 'Virovitica-Podravina', 54, NULL, NULL),
-(890, 'Vukovar-Srijem', 54, NULL, NULL),
-(891, 'Zadar', 54, NULL, NULL),
-(892, 'Zagreb', 54, NULL, NULL),
-(893, 'Camaguey', 55, NULL, NULL),
-(894, 'Ciego de Avila', 55, NULL, NULL),
-(895, 'Cienfuegos', 55, NULL, NULL),
-(896, 'Ciudad de la Habana', 55, NULL, NULL),
-(897, 'Granma', 55, NULL, NULL),
-(898, 'Guantanamo', 55, NULL, NULL),
-(899, 'Habana', 55, NULL, NULL),
-(900, 'Holguin', 55, NULL, NULL),
-(901, 'Isla de la Juventud', 55, NULL, NULL),
-(902, 'La Habana', 55, NULL, NULL),
-(903, 'Las Tunas', 55, NULL, NULL),
-(904, 'Matanzas', 55, NULL, NULL),
-(905, 'Pinar del Rio', 55, NULL, NULL),
-(906, 'Sancti Spiritus', 55, NULL, NULL),
-(907, 'Santiago de Cuba', 55, NULL, NULL),
-(908, 'Villa Clara', 55, NULL, NULL),
-(909, 'Government controlled area', 56, NULL, NULL),
-(910, 'Limassol', 56, NULL, NULL),
-(911, 'Nicosia District', 56, NULL, NULL),
-(912, 'Paphos', 56, NULL, NULL),
-(913, 'Turkish controlled area', 56, NULL, NULL),
-(914, 'Central Bohemian', 57, NULL, NULL),
-(915, 'Frycovice', 57, NULL, NULL),
-(916, 'Jihocesky Kraj', 57, NULL, NULL),
-(917, 'Jihochesky', 57, NULL, NULL),
-(918, 'Jihomoravsky', 57, NULL, NULL),
-(919, 'Karlovarsky', 57, NULL, NULL),
-(920, 'Klecany', 57, NULL, NULL),
-(921, 'Kralovehradecky', 57, NULL, NULL),
-(922, 'Liberecky', 57, NULL, NULL),
-(923, 'Lipov', 57, NULL, NULL),
-(924, 'Moravskoslezsky', 57, NULL, NULL),
-(925, 'Olomoucky', 57, NULL, NULL),
-(926, 'Olomoucky Kraj', 57, NULL, NULL),
-(927, 'Pardubicky', 57, NULL, NULL),
-(928, 'Plzensky', 57, NULL, NULL),
-(929, 'Praha', 57, NULL, NULL),
-(930, 'Rajhrad', 57, NULL, NULL),
-(931, 'Smirice', 57, NULL, NULL),
-(932, 'South Moravian', 57, NULL, NULL),
-(933, 'Straz nad Nisou', 57, NULL, NULL),
-(934, 'Stredochesky', 57, NULL, NULL),
-(935, 'Unicov', 57, NULL, NULL),
-(936, 'Ustecky', 57, NULL, NULL),
-(937, 'Valletta', 57, NULL, NULL),
-(938, 'Velesin', 57, NULL, NULL),
-(939, 'Vysochina', 57, NULL, NULL),
-(940, 'Zlinsky', 57, NULL, NULL),
-(941, 'Arhus', 58, NULL, NULL),
-(942, 'Bornholm', 58, NULL, NULL),
-(943, 'Frederiksborg', 58, NULL, NULL),
-(944, 'Fyn', 58, NULL, NULL),
-(945, 'Hovedstaden', 58, NULL, NULL),
-(946, 'Kobenhavn', 58, NULL, NULL),
-(947, 'Kobenhavns Amt', 58, NULL, NULL),
-(948, 'Kobenhavns Kommune', 58, NULL, NULL),
-(949, 'Nordjylland', 58, NULL, NULL),
-(950, 'Ribe', 58, NULL, NULL),
-(951, 'Ringkobing', 58, NULL, NULL),
-(952, 'Roervig', 58, NULL, NULL),
-(953, 'Roskilde', 58, NULL, NULL),
-(954, 'Roslev', 58, NULL, NULL),
-(955, 'Sjaelland', 58, NULL, NULL),
-(956, 'Soeborg', 58, NULL, NULL),
-(957, 'Sonderjylland', 58, NULL, NULL),
-(958, 'Storstrom', 58, NULL, NULL),
-(959, 'Syddanmark', 58, NULL, NULL),
-(960, 'Toelloese', 58, NULL, NULL),
-(961, 'Vejle', 58, NULL, NULL),
-(962, 'Vestsjalland', 58, NULL, NULL),
-(963, 'Viborg', 58, NULL, NULL),
-(964, 'Ali Sabih', 59, NULL, NULL),
-(965, 'Dikhil', 59, NULL, NULL),
-(966, 'Jibuti', 59, NULL, NULL),
-(967, 'Tajurah', 59, NULL, NULL),
-(968, 'Ubuk', 59, NULL, NULL),
-(969, 'Saint Andrew', 60, NULL, NULL),
-(970, 'Saint David', 60, NULL, NULL),
-(971, 'Saint George', 60, NULL, NULL),
-(972, 'Saint John', 60, NULL, NULL),
-(973, 'Saint Joseph', 60, NULL, NULL),
-(974, 'Saint Luke', 60, NULL, NULL),
-(975, 'Saint Mark', 60, NULL, NULL),
-(976, 'Saint Patrick', 60, NULL, NULL),
-(977, 'Saint Paul', 60, NULL, NULL),
-(978, 'Saint Peter', 60, NULL, NULL),
-(979, 'Azua', 61, NULL, NULL),
-(980, 'Bahoruco', 61, NULL, NULL),
-(981, 'Barahona', 61, NULL, NULL),
-(982, 'Dajabon', 61, NULL, NULL),
-(983, 'Distrito Nacional', 61, NULL, NULL),
-(984, 'Duarte', 61, NULL, NULL),
-(985, 'El Seybo', 61, NULL, NULL),
-(986, 'Elias Pina', 61, NULL, NULL),
-(987, 'Espaillat', 61, NULL, NULL),
-(988, 'Hato Mayor', 61, NULL, NULL),
-(989, 'Independencia', 61, NULL, NULL),
-(990, 'La Altagracia', 61, NULL, NULL),
-(991, 'La Romana', 61, NULL, NULL),
-(992, 'La Vega', 61, NULL, NULL),
-(993, 'Maria Trinidad Sanchez', 61, NULL, NULL),
-(994, 'Monsenor Nouel', 61, NULL, NULL),
-(995, 'Monte Cristi', 61, NULL, NULL),
-(996, 'Monte Plata', 61, NULL, NULL),
-(997, 'Pedernales', 61, NULL, NULL),
-(998, 'Peravia', 61, NULL, NULL),
-(999, 'Puerto Plata', 61, NULL, NULL),
-(1000, 'Salcedo', 61, NULL, NULL),
-(1001, 'Samana', 61, NULL, NULL),
-(1002, 'San Cristobal', 61, NULL, NULL),
-(1003, 'San Juan', 61, NULL, NULL),
-(1004, 'San Pedro de Macoris', 61, NULL, NULL),
-(1005, 'Sanchez Ramirez', 61, NULL, NULL),
-(1006, 'Santiago', 61, NULL, NULL),
-(1007, 'Santiago Rodriguez', 61, NULL, NULL),
-(1008, 'Valverde', 61, NULL, NULL),
-(1009, 'Aileu', 62, NULL, NULL),
-(1010, 'Ainaro', 62, NULL, NULL),
-(1011, 'Ambeno', 62, NULL, NULL),
-(1012, 'Baucau', 62, NULL, NULL),
-(1013, 'Bobonaro', 62, NULL, NULL),
-(1014, 'Cova Lima', 62, NULL, NULL),
-(1015, 'Dili', 62, NULL, NULL),
-(1016, 'Ermera', 62, NULL, NULL),
-(1017, 'Lautem', 62, NULL, NULL),
-(1018, 'Liquica', 62, NULL, NULL),
-(1019, 'Manatuto', 62, NULL, NULL),
-(1020, 'Manufahi', 62, NULL, NULL),
-(1021, 'Viqueque', 62, NULL, NULL),
-(1022, 'Azuay', 63, NULL, NULL),
-(1023, 'Bolivar', 63, NULL, NULL),
-(1024, 'Canar', 63, NULL, NULL),
-(1025, 'Carchi', 63, NULL, NULL),
-(1026, 'Chimborazo', 63, NULL, NULL),
-(1027, 'Cotopaxi', 63, NULL, NULL),
-(1028, 'El Oro', 63, NULL, NULL),
-(1029, 'Esmeraldas', 63, NULL, NULL),
-(1030, 'Galapagos', 63, NULL, NULL),
-(1031, 'Guayas', 63, NULL, NULL),
-(1032, 'Imbabura', 63, NULL, NULL),
-(1033, 'Loja', 63, NULL, NULL),
-(1034, 'Los Rios', 63, NULL, NULL),
-(1035, 'Manabi', 63, NULL, NULL),
-(1036, 'Morona Santiago', 63, NULL, NULL),
-(1037, 'Napo', 63, NULL, NULL),
-(1038, 'Orellana', 63, NULL, NULL),
-(1039, 'Pastaza', 63, NULL, NULL),
-(1040, 'Pichincha', 63, NULL, NULL),
-(1041, 'Sucumbios', 63, NULL, NULL),
-(1042, 'Tungurahua', 63, NULL, NULL),
-(1043, 'Zamora Chinchipe', 63, NULL, NULL),
-(1044, 'Aswan', 64, NULL, NULL),
-(1045, 'Asyut', 64, NULL, NULL),
-(1046, 'Bani Suwayf', 64, NULL, NULL),
-(1047, 'Bur Sa\'\'id', 64, NULL, NULL),
-(1048, 'Cairo', 64, NULL, NULL),
-(1049, 'Dumyat', 64, NULL, NULL),
-(1050, 'Kafr-ash-Shaykh', 64, NULL, NULL),
-(1051, 'Matruh', 64, NULL, NULL),
-(1052, 'Muhafazat ad Daqahliyah', 64, NULL, NULL),
-(1053, 'Muhafazat al Fayyum', 64, NULL, NULL),
-(1054, 'Muhafazat al Gharbiyah', 64, NULL, NULL),
-(1055, 'Muhafazat al Iskandariyah', 64, NULL, NULL),
-(1056, 'Muhafazat al Qahirah', 64, NULL, NULL),
-(1057, 'Qina', 64, NULL, NULL),
-(1058, 'Sawhaj', 64, NULL, NULL),
-(1059, 'Sina al-Janubiyah', 64, NULL, NULL),
-(1060, 'Sina ash-Shamaliyah', 64, NULL, NULL),
-(1061, 'ad-Daqahliyah', 64, NULL, NULL),
-(1062, 'al-Bahr-al-Ahmar', 64, NULL, NULL),
-(1063, 'al-Buhayrah', 64, NULL, NULL),
-(1064, 'al-Fayyum', 64, NULL, NULL),
-(1065, 'al-Gharbiyah', 64, NULL, NULL),
-(1066, 'al-Iskandariyah', 64, NULL, NULL),
-(1067, 'al-Ismailiyah', 64, NULL, NULL),
-(1068, 'al-Jizah', 64, NULL, NULL),
-(1069, 'al-Minufiyah', 64, NULL, NULL),
-(1070, 'al-Minya', 64, NULL, NULL),
-(1071, 'al-Qahira', 64, NULL, NULL),
-(1072, 'al-Qalyubiyah', 64, NULL, NULL),
-(1073, 'al-Uqsur', 64, NULL, NULL),
-(1074, 'al-Wadi al-Jadid', 64, NULL, NULL),
-(1075, 'as-Suways', 64, NULL, NULL),
-(1076, 'ash-Sharqiyah', 64, NULL, NULL),
-(1077, 'Ahuachapan', 65, NULL, NULL),
-(1078, 'Cabanas', 65, NULL, NULL),
-(1079, 'Chalatenango', 65, NULL, NULL),
-(1080, 'Cuscatlan', 65, NULL, NULL),
-(1081, 'La Libertad', 65, NULL, NULL),
-(1082, 'La Paz', 65, NULL, NULL),
-(1083, 'La Union', 65, NULL, NULL),
-(1084, 'Morazan', 65, NULL, NULL),
-(1085, 'San Miguel', 65, NULL, NULL),
-(1086, 'San Salvador', 65, NULL, NULL),
-(1087, 'San Vicente', 65, NULL, NULL),
-(1088, 'Santa Ana', 65, NULL, NULL),
-(1089, 'Sonsonate', 65, NULL, NULL),
-(1090, 'Usulutan', 65, NULL, NULL),
-(1091, 'Annobon', 66, NULL, NULL),
-(1092, 'Bioko Norte', 66, NULL, NULL),
-(1093, 'Bioko Sur', 66, NULL, NULL),
-(1094, 'Centro Sur', 66, NULL, NULL),
-(1095, 'Kie-Ntem', 66, NULL, NULL),
-(1096, 'Litoral', 66, NULL, NULL),
-(1097, 'Wele-Nzas', 66, NULL, NULL),
-(1098, 'Anseba', 67, NULL, NULL),
-(1099, 'Debub', 67, NULL, NULL),
-(1100, 'Debub-Keih-Bahri', 67, NULL, NULL),
-(1101, 'Gash-Barka', 67, NULL, NULL),
-(1102, 'Maekel', 67, NULL, NULL),
-(1103, 'Semien-Keih-Bahri', 67, NULL, NULL),
-(1104, 'Harju', 68, NULL, NULL),
-(1105, 'Hiiu', 68, NULL, NULL),
-(1106, 'Ida-Viru', 68, NULL, NULL),
-(1107, 'Jarva', 68, NULL, NULL),
-(1108, 'Jogeva', 68, NULL, NULL),
-(1109, 'Laane', 68, NULL, NULL),
-(1110, 'Laane-Viru', 68, NULL, NULL),
-(1111, 'Parnu', 68, NULL, NULL),
-(1112, 'Polva', 68, NULL, NULL),
-(1113, 'Rapla', 68, NULL, NULL),
-(1114, 'Saare', 68, NULL, NULL),
-(1115, 'Tartu', 68, NULL, NULL),
-(1116, 'Valga', 68, NULL, NULL),
-(1117, 'Viljandi', 68, NULL, NULL),
-(1118, 'Voru', 68, NULL, NULL),
-(1119, 'Addis Abeba', 69, NULL, NULL),
-(1120, 'Afar', 69, NULL, NULL),
-(1121, 'Amhara', 69, NULL, NULL),
-(1122, 'Benishangul', 69, NULL, NULL),
-(1123, 'Diredawa', 69, NULL, NULL),
-(1124, 'Gambella', 69, NULL, NULL),
-(1125, 'Harar', 69, NULL, NULL),
-(1126, 'Jigjiga', 69, NULL, NULL),
-(1127, 'Mekele', 69, NULL, NULL),
-(1128, 'Oromia', 69, NULL, NULL),
-(1129, 'Somali', 69, NULL, NULL),
-(1130, 'Southern', 69, NULL, NULL),
-(1131, 'Tigray', 69, NULL, NULL),
-(1132, 'Christmas Island', 70, NULL, NULL),
-(1133, 'Cocos Islands', 70, NULL, NULL),
-(1134, 'Coral Sea Islands', 70, NULL, NULL),
-(1135, 'Falkland Islands', 71, NULL, NULL),
-(1136, 'South Georgia', 71, NULL, NULL),
-(1137, 'Klaksvik', 72, NULL, NULL),
-(1138, 'Nor ara Eysturoy', 72, NULL, NULL),
-(1139, 'Nor oy', 72, NULL, NULL),
-(1140, 'Sandoy', 72, NULL, NULL),
-(1141, 'Streymoy', 72, NULL, NULL),
-(1142, 'Su uroy', 72, NULL, NULL),
-(1143, 'Sy ra Eysturoy', 72, NULL, NULL),
-(1144, 'Torshavn', 72, NULL, NULL),
-(1145, 'Vaga', 72, NULL, NULL),
-(1146, 'Central', 73, NULL, NULL),
-(1147, 'Eastern', 73, NULL, NULL),
-(1148, 'Northern', 73, NULL, NULL),
-(1149, 'South Pacific', 73, NULL, NULL),
-(1150, 'Western', 73, NULL, NULL),
-(1151, 'Ahvenanmaa', 74, NULL, NULL),
-(1152, 'Etela-Karjala', 74, NULL, NULL),
-(1153, 'Etela-Pohjanmaa', 74, NULL, NULL),
-(1154, 'Etela-Savo', 74, NULL, NULL),
-(1155, 'Etela-Suomen Laani', 74, NULL, NULL),
-(1156, 'Ita-Suomen Laani', 74, NULL, NULL),
-(1157, 'Ita-Uusimaa', 74, NULL, NULL),
-(1158, 'Kainuu', 74, NULL, NULL),
-(1159, 'Kanta-Hame', 74, NULL, NULL),
-(1160, 'Keski-Pohjanmaa', 74, NULL, NULL),
-(1161, 'Keski-Suomi', 74, NULL, NULL),
-(1162, 'Kymenlaakso', 74, NULL, NULL),
-(1163, 'Lansi-Suomen Laani', 74, NULL, NULL),
-(1164, 'Lappi', 74, NULL, NULL),
-(1165, 'Northern Savonia', 74, NULL, NULL),
-(1166, 'Ostrobothnia', 74, NULL, NULL),
-(1167, 'Oulun Laani', 74, NULL, NULL),
-(1168, 'Paijat-Hame', 74, NULL, NULL),
-(1169, 'Pirkanmaa', 74, NULL, NULL),
-(1170, 'Pohjanmaa', 74, NULL, NULL),
-(1171, 'Pohjois-Karjala', 74, NULL, NULL),
-(1172, 'Pohjois-Pohjanmaa', 74, NULL, NULL),
-(1173, 'Pohjois-Savo', 74, NULL, NULL),
-(1174, 'Saarijarvi', 74, NULL, NULL),
-(1175, 'Satakunta', 74, NULL, NULL),
-(1176, 'Southern Savonia', 74, NULL, NULL),
-(1177, 'Tavastia Proper', 74, NULL, NULL),
-(1178, 'Uleaborgs Lan', 74, NULL, NULL),
-(1179, 'Uusimaa', 74, NULL, NULL),
-(1180, 'Varsinais-Suomi', 74, NULL, NULL),
-(1181, 'Ain', 75, NULL, NULL),
-(1182, 'Aisne', 75, NULL, NULL),
-(1183, 'Albi Le Sequestre', 75, NULL, NULL),
-(1184, 'Allier', 75, NULL, NULL),
-(1185, 'Alpes-Cote dAzur', 75, NULL, NULL),
-(1186, 'Alpes-Maritimes', 75, NULL, NULL),
-(1187, 'Alpes-de-Haute-Provence', 75, NULL, NULL),
-(1188, 'Alsace', 75, NULL, NULL),
-(1189, 'Aquitaine', 75, NULL, NULL),
-(1190, 'Ardeche', 75, NULL, NULL),
-(1191, 'Ardennes', 75, NULL, NULL),
-(1192, 'Ariege', 75, NULL, NULL),
-(1193, 'Aube', 75, NULL, NULL),
-(1194, 'Aude', 75, NULL, NULL),
-(1195, 'Auvergne', 75, NULL, NULL),
-(1196, 'Aveyron', 75, NULL, NULL),
-(1197, 'Bas-Rhin', 75, NULL, NULL),
-(1198, 'Basse-Normandie', 75, NULL, NULL),
-(1199, 'Bouches-du-Rhone', 75, NULL, NULL),
-(1200, 'Bourgogne', 75, NULL, NULL),
-(1201, 'Bretagne', 75, NULL, NULL),
-(1202, 'Brittany', 75, NULL, NULL),
-(1203, 'Burgundy', 75, NULL, NULL),
-(1204, 'Calvados', 75, NULL, NULL),
-(1205, 'Cantal', 75, NULL, NULL),
-(1206, 'Cedex', 75, NULL, NULL),
-(1207, 'Centre', 75, NULL, NULL),
-(1208, 'Charente', 75, NULL, NULL),
-(1209, 'Charente-Maritime', 75, NULL, NULL),
-(1210, 'Cher', 75, NULL, NULL),
-(1211, 'Correze', 75, NULL, NULL),
-(1212, 'Corse-du-Sud', 75, NULL, NULL),
-(1213, 'Cote-d\'\'Or', 75, NULL, NULL),
-(1214, 'Cotes-d\'\'Armor', 75, NULL, NULL),
-(1215, 'Creuse', 75, NULL, NULL),
-(1216, 'Crolles', 75, NULL, NULL),
-(1217, 'Deux-Sevres', 75, NULL, NULL),
-(1218, 'Dordogne', 75, NULL, NULL),
-(1219, 'Doubs', 75, NULL, NULL),
-(1220, 'Drome', 75, NULL, NULL),
-(1221, 'Essonne', 75, NULL, NULL),
-(1222, 'Eure', 75, NULL, NULL),
-(1223, 'Eure-et-Loir', 75, NULL, NULL),
-(1224, 'Feucherolles', 75, NULL, NULL),
-(1225, 'Finistere', 75, NULL, NULL),
-(1226, 'Franche-Comte', 75, NULL, NULL),
-(1227, 'Gard', 75, NULL, NULL),
-(1228, 'Gers', 75, NULL, NULL),
-(1229, 'Gironde', 75, NULL, NULL),
-(1230, 'Haut-Rhin', 75, NULL, NULL),
-(1231, 'Haute-Corse', 75, NULL, NULL),
-(1232, 'Haute-Garonne', 75, NULL, NULL),
-(1233, 'Haute-Loire', 75, NULL, NULL),
-(1234, 'Haute-Marne', 75, NULL, NULL),
-(1235, 'Haute-Saone', 75, NULL, NULL),
-(1236, 'Haute-Savoie', 75, NULL, NULL),
-(1237, 'Haute-Vienne', 75, NULL, NULL),
-(1238, 'Hautes-Alpes', 75, NULL, NULL),
-(1239, 'Hautes-Pyrenees', 75, NULL, NULL),
-(1240, 'Hauts-de-Seine', 75, NULL, NULL),
-(1241, 'Herault', 75, NULL, NULL),
-(1242, 'Ile-de-France', 75, NULL, NULL),
-(1243, 'Ille-et-Vilaine', 75, NULL, NULL),
-(1244, 'Indre', 75, NULL, NULL),
-(1245, 'Indre-et-Loire', 75, NULL, NULL),
-(1246, 'Isere', 75, NULL, NULL),
-(1247, 'Jura', 75, NULL, NULL),
-(1248, 'Klagenfurt', 75, NULL, NULL),
-(1249, 'Landes', 75, NULL, NULL),
-(1250, 'Languedoc-Roussillon', 75, NULL, NULL),
-(1251, 'Larcay', 75, NULL, NULL),
-(1252, 'Le Castellet', 75, NULL, NULL),
-(1253, 'Le Creusot', 75, NULL, NULL),
-(1254, 'Limousin', 75, NULL, NULL),
-(1255, 'Loir-et-Cher', 75, NULL, NULL),
-(1256, 'Loire', 75, NULL, NULL),
-(1257, 'Loire-Atlantique', 75, NULL, NULL),
-(1258, 'Loiret', 75, NULL, NULL),
-(1259, 'Lorraine', 75, NULL, NULL),
-(1260, 'Lot', 75, NULL, NULL),
-(1261, 'Lot-et-Garonne', 75, NULL, NULL),
-(1262, 'Lower Normandy', 75, NULL, NULL),
-(1263, 'Lozere', 75, NULL, NULL),
-(1264, 'Maine-et-Loire', 75, NULL, NULL),
-(1265, 'Manche', 75, NULL, NULL),
-(1266, 'Marne', 75, NULL, NULL),
-(1267, 'Mayenne', 75, NULL, NULL),
-(1268, 'Meurthe-et-Moselle', 75, NULL, NULL),
-(1269, 'Meuse', 75, NULL, NULL),
-(1270, 'Midi-Pyrenees', 75, NULL, NULL),
-(1271, 'Morbihan', 75, NULL, NULL),
-(1272, 'Moselle', 75, NULL, NULL),
-(1273, 'Nievre', 75, NULL, NULL),
-(1274, 'Nord', 75, NULL, NULL),
-(1275, 'Nord-Pas-de-Calais', 75, NULL, NULL),
-(1276, 'Oise', 75, NULL, NULL),
-(1277, 'Orne', 75, NULL, NULL),
-(1278, 'Paris', 75, NULL, NULL),
-(1279, 'Pas-de-Calais', 75, NULL, NULL),
-(1280, 'Pays de la Loire', 75, NULL, NULL),
-(1281, 'Pays-de-la-Loire', 75, NULL, NULL),
-(1282, 'Picardy', 75, NULL, NULL),
-(1283, 'Puy-de-Dome', 75, NULL, NULL),
-(1284, 'Pyrenees-Atlantiques', 75, NULL, NULL),
-(1285, 'Pyrenees-Orientales', 75, NULL, NULL),
-(1286, 'Quelmes', 75, NULL, NULL),
-(1287, 'Rhone', 75, NULL, NULL),
-(1288, 'Rhone-Alpes', 75, NULL, NULL),
-(1289, 'Saint Ouen', 75, NULL, NULL),
-(1290, 'Saint Viatre', 75, NULL, NULL),
-(1291, 'Saone-et-Loire', 75, NULL, NULL),
-(1292, 'Sarthe', 75, NULL, NULL),
-(1293, 'Savoie', 75, NULL, NULL),
-(1294, 'Seine-Maritime', 75, NULL, NULL),
-(1295, 'Seine-Saint-Denis', 75, NULL, NULL),
-(1296, 'Seine-et-Marne', 75, NULL, NULL),
-(1297, 'Somme', 75, NULL, NULL),
-(1298, 'Sophia Antipolis', 75, NULL, NULL),
-(1299, 'Souvans', 75, NULL, NULL),
-(1300, 'Tarn', 75, NULL, NULL),
-(1301, 'Tarn-et-Garonne', 75, NULL, NULL),
-(1302, 'Territoire de Belfort', 75, NULL, NULL),
-(1303, 'Treignac', 75, NULL, NULL),
-(1304, 'Upper Normandy', 75, NULL, NULL),
-(1305, 'Val-d\'\'Oise', 75, NULL, NULL),
-(1306, 'Val-de-Marne', 75, NULL, NULL),
-(1307, 'Var', 75, NULL, NULL),
-(1308, 'Vaucluse', 75, NULL, NULL),
-(1309, 'Vellise', 75, NULL, NULL),
-(1310, 'Vendee', 75, NULL, NULL),
-(1311, 'Vienne', 75, NULL, NULL),
-(1312, 'Vosges', 75, NULL, NULL),
-(1313, 'Yonne', 75, NULL, NULL),
-(1314, 'Yvelines', 75, NULL, NULL),
-(1315, 'Cayenne', 76, NULL, NULL),
-(1316, 'Saint-Laurent-du-Maroni', 76, NULL, NULL),
-(1317, 'Iles du Vent', 77, NULL, NULL),
-(1318, 'Iles sous le Vent', 77, NULL, NULL),
-(1319, 'Marquesas', 77, NULL, NULL),
-(1320, 'Tuamotu', 77, NULL, NULL),
-(1321, 'Tubuai', 77, NULL, NULL),
-(1322, 'Amsterdam', 78, NULL, NULL),
-(1323, 'Crozet Islands', 78, NULL, NULL),
-(1324, 'Kerguelen', 78, NULL, NULL),
-(1325, 'Estuaire', 79, NULL, NULL),
-(1326, 'Haut-Ogooue', 79, NULL, NULL),
-(1327, 'Moyen-Ogooue', 79, NULL, NULL),
-(1328, 'Ngounie', 79, NULL, NULL),
-(1329, 'Nyanga', 79, NULL, NULL),
-(1330, 'Ogooue-Ivindo', 79, NULL, NULL),
-(1331, 'Ogooue-Lolo', 79, NULL, NULL),
-(1332, 'Ogooue-Maritime', 79, NULL, NULL),
-(1333, 'Woleu-Ntem', 79, NULL, NULL),
-(1334, 'Banjul', 80, NULL, NULL),
-(1335, 'Basse', 80, NULL, NULL),
-(1336, 'Brikama', 80, NULL, NULL),
-(1337, 'Janjanbureh', 80, NULL, NULL),
-(1338, 'Kanifing', 80, NULL, NULL),
-(1339, 'Kerewan', 80, NULL, NULL),
-(1340, 'Kuntaur', 80, NULL, NULL),
-(1341, 'Mansakonko', 80, NULL, NULL),
-(1342, 'Abhasia', 81, NULL, NULL),
-(1343, 'Ajaria', 81, NULL, NULL),
-(1344, 'Guria', 81, NULL, NULL),
-(1345, 'Imereti', 81, NULL, NULL),
-(1346, 'Kaheti', 81, NULL, NULL),
-(1347, 'Kvemo Kartli', 81, NULL, NULL),
-(1348, 'Mcheta-Mtianeti', 81, NULL, NULL),
-(1349, 'Racha', 81, NULL, NULL),
-(1350, 'Samagrelo-Zemo Svaneti', 81, NULL, NULL),
-(1351, 'Samche-Zhavaheti', 81, NULL, NULL),
-(1352, 'Shida Kartli', 81, NULL, NULL),
-(1353, 'Tbilisi', 81, NULL, NULL),
-(1354, 'Auvergne', 82, NULL, NULL),
-(1355, 'Baden-Wurttemberg', 82, NULL, NULL),
-(1356, 'Bavaria', 82, NULL, NULL),
-(1357, 'Bayern', 82, NULL, NULL),
-(1358, 'Beilstein Wurtt', 82, NULL, NULL),
-(1359, 'Berlin', 82, NULL, NULL),
-(1360, 'Brandenburg', 82, NULL, NULL),
-(1361, 'Bremen', 82, NULL, NULL),
-(1362, 'Dreisbach', 82, NULL, NULL),
-(1363, 'Freistaat Bayern', 82, NULL, NULL),
-(1364, 'Hamburg', 82, NULL, NULL),
-(1365, 'Hannover', 82, NULL, NULL),
-(1366, 'Heroldstatt', 82, NULL, NULL),
-(1367, 'Hessen', 82, NULL, NULL),
-(1368, 'Kortenberg', 82, NULL, NULL),
-(1369, 'Laasdorf', 82, NULL, NULL),
-(1370, 'Land Baden-Wurttemberg', 82, NULL, NULL),
-(1371, 'Land Bayern', 82, NULL, NULL),
-(1372, 'Land Brandenburg', 82, NULL, NULL),
-(1373, 'Land Hessen', 82, NULL, NULL),
-(1374, 'Land Mecklenburg-Vorpommern', 82, NULL, NULL),
-(1375, 'Land Nordrhein-Westfalen', 82, NULL, NULL),
-(1376, 'Land Rheinland-Pfalz', 82, NULL, NULL),
-(1377, 'Land Sachsen', 82, NULL, NULL),
-(1378, 'Land Sachsen-Anhalt', 82, NULL, NULL),
-(1379, 'Land Thuringen', 82, NULL, NULL),
-(1380, 'Lower Saxony', 82, NULL, NULL),
-(1381, 'Mecklenburg-Vorpommern', 82, NULL, NULL),
-(1382, 'Mulfingen', 82, NULL, NULL),
-(1383, 'Munich', 82, NULL, NULL),
-(1384, 'Neubeuern', 82, NULL, NULL),
-(1385, 'Niedersachsen', 82, NULL, NULL),
-(1386, 'Noord-Holland', 82, NULL, NULL),
-(1387, 'Nordrhein-Westfalen', 82, NULL, NULL),
-(1388, 'North Rhine-Westphalia', 82, NULL, NULL),
-(1389, 'Osterode', 82, NULL, NULL),
-(1390, 'Rheinland-Pfalz', 82, NULL, NULL),
-(1391, 'Rhineland-Palatinate', 82, NULL, NULL),
-(1392, 'Saarland', 82, NULL, NULL),
-(1393, 'Sachsen', 82, NULL, NULL),
-(1394, 'Sachsen-Anhalt', 82, NULL, NULL),
-(1395, 'Saxony', 82, NULL, NULL),
-(1396, 'Schleswig-Holstein', 82, NULL, NULL),
-(1397, 'Thuringia', 82, NULL, NULL),
-(1398, 'Webling', 82, NULL, NULL),
-(1399, 'Weinstrabe', 82, NULL, NULL),
-(1400, 'schlobborn', 82, NULL, NULL),
-(1401, 'Ashanti', 83, NULL, NULL),
-(1402, 'Brong-Ahafo', 83, NULL, NULL),
-(1403, 'Central', 83, NULL, NULL),
-(1404, 'Eastern', 83, NULL, NULL),
-(1405, 'Greater Accra', 83, NULL, NULL),
-(1406, 'Northern', 83, NULL, NULL),
-(1407, 'Upper East', 83, NULL, NULL),
-(1408, 'Upper West', 83, NULL, NULL),
-(1409, 'Volta', 83, NULL, NULL),
-(1410, 'Western', 83, NULL, NULL),
-(1411, 'Gibraltar', 84, NULL, NULL),
-(1412, 'Acharnes', 85, NULL, NULL),
-(1413, 'Ahaia', 85, NULL, NULL),
-(1414, 'Aitolia kai Akarnania', 85, NULL, NULL),
-(1415, 'Argolis', 85, NULL, NULL),
-(1416, 'Arkadia', 85, NULL, NULL),
-(1417, 'Arta', 85, NULL, NULL),
-(1418, 'Attica', 85, NULL, NULL),
-(1419, 'Attiki', 85, NULL, NULL),
-(1420, 'Ayion Oros', 85, NULL, NULL),
-(1421, 'Crete', 85, NULL, NULL),
-(1422, 'Dodekanisos', 85, NULL, NULL),
-(1423, 'Drama', 85, NULL, NULL),
-(1424, 'Evia', 85, NULL, NULL),
-(1425, 'Evritania', 85, NULL, NULL),
-(1426, 'Evros', 85, NULL, NULL),
-(1427, 'Evvoia', 85, NULL, NULL),
-(1428, 'Florina', 85, NULL, NULL),
-(1429, 'Fokis', 85, NULL, NULL),
-(1430, 'Fthiotis', 85, NULL, NULL),
-(1431, 'Grevena', 85, NULL, NULL),
-(1432, 'Halandri', 85, NULL, NULL),
-(1433, 'Halkidiki', 85, NULL, NULL),
-(1434, 'Hania', 85, NULL, NULL),
-(1435, 'Heraklion', 85, NULL, NULL),
-(1436, 'Hios', 85, NULL, NULL),
-(1437, 'Ilia', 85, NULL, NULL),
-(1438, 'Imathia', 85, NULL, NULL),
-(1439, 'Ioannina', 85, NULL, NULL),
-(1440, 'Iraklion', 85, NULL, NULL),
-(1441, 'Karditsa', 85, NULL, NULL),
-(1442, 'Kastoria', 85, NULL, NULL),
-(1443, 'Kavala', 85, NULL, NULL),
-(1444, 'Kefallinia', 85, NULL, NULL),
-(1445, 'Kerkira', 85, NULL, NULL),
-(1446, 'Kiklades', 85, NULL, NULL),
-(1447, 'Kilkis', 85, NULL, NULL),
-(1448, 'Korinthia', 85, NULL, NULL),
-(1449, 'Kozani', 85, NULL, NULL),
-(1450, 'Lakonia', 85, NULL, NULL);
-INSERT INTO `states` (`id`, `name`, `country_id`, `created_at`, `updated_at`) VALUES
-(1451, 'Larisa', 85, NULL, NULL),
-(1452, 'Lasithi', 85, NULL, NULL),
-(1453, 'Lesvos', 85, NULL, NULL),
-(1454, 'Levkas', 85, NULL, NULL),
-(1455, 'Magnisia', 85, NULL, NULL),
-(1456, 'Messinia', 85, NULL, NULL),
-(1457, 'Nomos Attikis', 85, NULL, NULL),
-(1458, 'Nomos Zakynthou', 85, NULL, NULL),
-(1459, 'Pella', 85, NULL, NULL),
-(1460, 'Pieria', 85, NULL, NULL),
-(1461, 'Piraios', 85, NULL, NULL),
-(1462, 'Preveza', 85, NULL, NULL),
-(1463, 'Rethimni', 85, NULL, NULL),
-(1464, 'Rodopi', 85, NULL, NULL),
-(1465, 'Samos', 85, NULL, NULL),
-(1466, 'Serrai', 85, NULL, NULL),
-(1467, 'Thesprotia', 85, NULL, NULL),
-(1468, 'Thessaloniki', 85, NULL, NULL),
-(1469, 'Trikala', 85, NULL, NULL),
-(1470, 'Voiotia', 85, NULL, NULL),
-(1471, 'West Greece', 85, NULL, NULL),
-(1472, 'Xanthi', 85, NULL, NULL),
-(1473, 'Zakinthos', 85, NULL, NULL),
-(1474, 'Aasiaat', 86, NULL, NULL),
-(1475, 'Ammassalik', 86, NULL, NULL),
-(1476, 'Illoqqortoormiut', 86, NULL, NULL),
-(1477, 'Ilulissat', 86, NULL, NULL),
-(1478, 'Ivittuut', 86, NULL, NULL),
-(1479, 'Kangaatsiaq', 86, NULL, NULL),
-(1480, 'Maniitsoq', 86, NULL, NULL),
-(1481, 'Nanortalik', 86, NULL, NULL),
-(1482, 'Narsaq', 86, NULL, NULL),
-(1483, 'Nuuk', 86, NULL, NULL),
-(1484, 'Paamiut', 86, NULL, NULL),
-(1485, 'Qaanaaq', 86, NULL, NULL),
-(1486, 'Qaqortoq', 86, NULL, NULL),
-(1487, 'Qasigiannguit', 86, NULL, NULL),
-(1488, 'Qeqertarsuaq', 86, NULL, NULL),
-(1489, 'Sisimiut', 86, NULL, NULL),
-(1490, 'Udenfor kommunal inddeling', 86, NULL, NULL),
-(1491, 'Upernavik', 86, NULL, NULL),
-(1492, 'Uummannaq', 86, NULL, NULL),
-(1493, 'Carriacou-Petite Martinique', 87, NULL, NULL),
-(1494, 'Saint Andrew', 87, NULL, NULL),
-(1495, 'Saint Davids', 87, NULL, NULL),
-(1496, 'Saint George\'\'s', 87, NULL, NULL),
-(1497, 'Saint John', 87, NULL, NULL),
-(1498, 'Saint Mark', 87, NULL, NULL),
-(1499, 'Saint Patrick', 87, NULL, NULL),
-(1500, 'Basse-Terre', 88, NULL, NULL),
-(1501, 'Grande-Terre', 88, NULL, NULL),
-(1502, 'Iles des Saintes', 88, NULL, NULL),
-(1503, 'La Desirade', 88, NULL, NULL),
-(1504, 'Marie-Galante', 88, NULL, NULL),
-(1505, 'Saint Barthelemy', 88, NULL, NULL),
-(1506, 'Saint Martin', 88, NULL, NULL),
-(1507, 'Agana Heights', 89, NULL, NULL),
-(1508, 'Agat', 89, NULL, NULL),
-(1509, 'Barrigada', 89, NULL, NULL),
-(1510, 'Chalan-Pago-Ordot', 89, NULL, NULL),
-(1511, 'Dededo', 89, NULL, NULL),
-(1512, 'Hagatna', 89, NULL, NULL),
-(1513, 'Inarajan', 89, NULL, NULL),
-(1514, 'Mangilao', 89, NULL, NULL),
-(1515, 'Merizo', 89, NULL, NULL),
-(1516, 'Mongmong-Toto-Maite', 89, NULL, NULL),
-(1517, 'Santa Rita', 89, NULL, NULL),
-(1518, 'Sinajana', 89, NULL, NULL),
-(1519, 'Talofofo', 89, NULL, NULL),
-(1520, 'Tamuning', 89, NULL, NULL),
-(1521, 'Yigo', 89, NULL, NULL),
-(1522, 'Yona', 89, NULL, NULL),
-(1523, 'Alta Verapaz', 90, NULL, NULL),
-(1524, 'Baja Verapaz', 90, NULL, NULL),
-(1525, 'Chimaltenango', 90, NULL, NULL),
-(1526, 'Chiquimula', 90, NULL, NULL),
-(1527, 'El Progreso', 90, NULL, NULL),
-(1528, 'Escuintla', 90, NULL, NULL),
-(1529, 'Guatemala', 90, NULL, NULL),
-(1530, 'Huehuetenango', 90, NULL, NULL),
-(1531, 'Izabal', 90, NULL, NULL),
-(1532, 'Jalapa', 90, NULL, NULL),
-(1533, 'Jutiapa', 90, NULL, NULL),
-(1534, 'Peten', 90, NULL, NULL),
-(1535, 'Quezaltenango', 90, NULL, NULL),
-(1536, 'Quiche', 90, NULL, NULL),
-(1537, 'Retalhuleu', 90, NULL, NULL),
-(1538, 'Sacatepequez', 90, NULL, NULL),
-(1539, 'San Marcos', 90, NULL, NULL),
-(1540, 'Santa Rosa', 90, NULL, NULL),
-(1541, 'Solola', 90, NULL, NULL),
-(1542, 'Suchitepequez', 90, NULL, NULL),
-(1543, 'Totonicapan', 90, NULL, NULL),
-(1544, 'Zacapa', 90, NULL, NULL),
-(1545, 'Alderney', 91, NULL, NULL),
-(1546, 'Castel', 91, NULL, NULL),
-(1547, 'Forest', 91, NULL, NULL),
-(1548, 'Saint Andrew', 91, NULL, NULL),
-(1549, 'Saint Martin', 91, NULL, NULL),
-(1550, 'Saint Peter Port', 91, NULL, NULL),
-(1551, 'Saint Pierre du Bois', 91, NULL, NULL),
-(1552, 'Saint Sampson', 91, NULL, NULL),
-(1553, 'Saint Saviour', 91, NULL, NULL),
-(1554, 'Sark', 91, NULL, NULL),
-(1555, 'Torteval', 91, NULL, NULL),
-(1556, 'Vale', 91, NULL, NULL),
-(1557, 'Beyla', 92, NULL, NULL),
-(1558, 'Boffa', 92, NULL, NULL),
-(1559, 'Boke', 92, NULL, NULL),
-(1560, 'Conakry', 92, NULL, NULL),
-(1561, 'Coyah', 92, NULL, NULL),
-(1562, 'Dabola', 92, NULL, NULL),
-(1563, 'Dalaba', 92, NULL, NULL),
-(1564, 'Dinguiraye', 92, NULL, NULL),
-(1565, 'Faranah', 92, NULL, NULL),
-(1566, 'Forecariah', 92, NULL, NULL),
-(1567, 'Fria', 92, NULL, NULL),
-(1568, 'Gaoual', 92, NULL, NULL),
-(1569, 'Gueckedou', 92, NULL, NULL),
-(1570, 'Kankan', 92, NULL, NULL),
-(1571, 'Kerouane', 92, NULL, NULL),
-(1572, 'Kindia', 92, NULL, NULL),
-(1573, 'Kissidougou', 92, NULL, NULL),
-(1574, 'Koubia', 92, NULL, NULL),
-(1575, 'Koundara', 92, NULL, NULL),
-(1576, 'Kouroussa', 92, NULL, NULL),
-(1577, 'Labe', 92, NULL, NULL),
-(1578, 'Lola', 92, NULL, NULL),
-(1579, 'Macenta', 92, NULL, NULL),
-(1580, 'Mali', 92, NULL, NULL),
-(1581, 'Mamou', 92, NULL, NULL),
-(1582, 'Mandiana', 92, NULL, NULL),
-(1583, 'Nzerekore', 92, NULL, NULL),
-(1584, 'Pita', 92, NULL, NULL),
-(1585, 'Siguiri', 92, NULL, NULL),
-(1586, 'Telimele', 92, NULL, NULL),
-(1587, 'Tougue', 92, NULL, NULL),
-(1588, 'Yomou', 92, NULL, NULL),
-(1589, 'Bafata', 93, NULL, NULL),
-(1590, 'Bissau', 93, NULL, NULL),
-(1591, 'Bolama', 93, NULL, NULL),
-(1592, 'Cacheu', 93, NULL, NULL),
-(1593, 'Gabu', 93, NULL, NULL),
-(1594, 'Oio', 93, NULL, NULL),
-(1595, 'Quinara', 93, NULL, NULL),
-(1596, 'Tombali', 93, NULL, NULL),
-(1597, 'Barima-Waini', 94, NULL, NULL),
-(1598, 'Cuyuni-Mazaruni', 94, NULL, NULL),
-(1599, 'Demerara-Mahaica', 94, NULL, NULL),
-(1600, 'East Berbice-Corentyne', 94, NULL, NULL),
-(1601, 'Essequibo Islands-West Demerar', 94, NULL, NULL),
-(1602, 'Mahaica-Berbice', 94, NULL, NULL),
-(1603, 'Pomeroon-Supenaam', 94, NULL, NULL),
-(1604, 'Potaro-Siparuni', 94, NULL, NULL),
-(1605, 'Upper Demerara-Berbice', 94, NULL, NULL),
-(1606, 'Upper Takutu-Upper Essequibo', 94, NULL, NULL),
-(1607, 'Artibonite', 95, NULL, NULL),
-(1608, 'Centre', 95, NULL, NULL),
-(1609, 'Grand\'\'Anse', 95, NULL, NULL),
-(1610, 'Nord', 95, NULL, NULL),
-(1611, 'Nord-Est', 95, NULL, NULL),
-(1612, 'Nord-Ouest', 95, NULL, NULL),
-(1613, 'Ouest', 95, NULL, NULL),
-(1614, 'Sud', 95, NULL, NULL),
-(1615, 'Sud-Est', 95, NULL, NULL),
-(1616, 'Heard and McDonald Islands', 96, NULL, NULL),
-(1617, 'Atlantida', 97, NULL, NULL),
-(1618, 'Choluteca', 97, NULL, NULL),
-(1619, 'Colon', 97, NULL, NULL),
-(1620, 'Comayagua', 97, NULL, NULL),
-(1621, 'Copan', 97, NULL, NULL),
-(1622, 'Cortes', 97, NULL, NULL),
-(1623, 'Distrito Central', 97, NULL, NULL),
-(1624, 'El Paraiso', 97, NULL, NULL),
-(1625, 'Francisco Morazan', 97, NULL, NULL),
-(1626, 'Gracias a Dios', 97, NULL, NULL),
-(1627, 'Intibuca', 97, NULL, NULL),
-(1628, 'Islas de la Bahia', 97, NULL, NULL),
-(1629, 'La Paz', 97, NULL, NULL),
-(1630, 'Lempira', 97, NULL, NULL),
-(1631, 'Ocotepeque', 97, NULL, NULL),
-(1632, 'Olancho', 97, NULL, NULL),
-(1633, 'Santa Barbara', 97, NULL, NULL),
-(1634, 'Valle', 97, NULL, NULL),
-(1635, 'Yoro', 97, NULL, NULL),
-(1636, 'Hong Kong', 98, NULL, NULL),
-(1637, 'Bacs-Kiskun', 99, NULL, NULL),
-(1638, 'Baranya', 99, NULL, NULL),
-(1639, 'Bekes', 99, NULL, NULL),
-(1640, 'Borsod-Abauj-Zemplen', 99, NULL, NULL),
-(1641, 'Budapest', 99, NULL, NULL),
-(1642, 'Csongrad', 99, NULL, NULL),
-(1643, 'Fejer', 99, NULL, NULL),
-(1644, 'Gyor-Moson-Sopron', 99, NULL, NULL),
-(1645, 'Hajdu-Bihar', 99, NULL, NULL),
-(1646, 'Heves', 99, NULL, NULL),
-(1647, 'Jasz-Nagykun-Szolnok', 99, NULL, NULL),
-(1648, 'Komarom-Esztergom', 99, NULL, NULL),
-(1649, 'Nograd', 99, NULL, NULL),
-(1650, 'Pest', 99, NULL, NULL),
-(1651, 'Somogy', 99, NULL, NULL),
-(1652, 'Szabolcs-Szatmar-Bereg', 99, NULL, NULL),
-(1653, 'Tolna', 99, NULL, NULL),
-(1654, 'Vas', 99, NULL, NULL),
-(1655, 'Veszprem', 99, NULL, NULL),
-(1656, 'Zala', 99, NULL, NULL),
-(1657, 'Austurland', 100, NULL, NULL),
-(1658, 'Gullbringusysla', 100, NULL, NULL),
-(1659, 'Hofu borgarsva i', 100, NULL, NULL),
-(1660, 'Nor urland eystra', 100, NULL, NULL),
-(1661, 'Nor urland vestra', 100, NULL, NULL),
-(1662, 'Su urland', 100, NULL, NULL),
-(1663, 'Su urnes', 100, NULL, NULL),
-(1664, 'Vestfir ir', 100, NULL, NULL),
-(1665, 'Vesturland', 100, NULL, NULL),
-(1666, 'Aceh', 102, NULL, NULL),
-(1667, 'Bali', 102, NULL, NULL),
-(1668, 'Bangka-Belitung', 102, NULL, NULL),
-(1669, 'Banten', 102, NULL, NULL),
-(1670, 'Bengkulu', 102, NULL, NULL),
-(1671, 'Gandaria', 102, NULL, NULL),
-(1672, 'Gorontalo', 102, NULL, NULL),
-(1673, 'Jakarta', 102, NULL, NULL),
-(1674, 'Jambi', 102, NULL, NULL),
-(1675, 'Jawa Barat', 102, NULL, NULL),
-(1676, 'Jawa Tengah', 102, NULL, NULL),
-(1677, 'Jawa Timur', 102, NULL, NULL),
-(1678, 'Kalimantan Barat', 102, NULL, NULL),
-(1679, 'Kalimantan Selatan', 102, NULL, NULL),
-(1680, 'Kalimantan Tengah', 102, NULL, NULL),
-(1681, 'Kalimantan Timur', 102, NULL, NULL),
-(1682, 'Kendal', 102, NULL, NULL),
-(1683, 'Lampung', 102, NULL, NULL),
-(1684, 'Maluku', 102, NULL, NULL),
-(1685, 'Maluku Utara', 102, NULL, NULL),
-(1686, 'Nusa Tenggara Barat', 102, NULL, NULL),
-(1687, 'Nusa Tenggara Timur', 102, NULL, NULL),
-(1688, 'Papua', 102, NULL, NULL),
-(1689, 'Riau', 102, NULL, NULL),
-(1690, 'Riau Kepulauan', 102, NULL, NULL),
-(1691, 'Solo', 102, NULL, NULL),
-(1692, 'Sulawesi Selatan', 102, NULL, NULL),
-(1693, 'Sulawesi Tengah', 102, NULL, NULL),
-(1694, 'Sulawesi Tenggara', 102, NULL, NULL),
-(1695, 'Sulawesi Utara', 102, NULL, NULL),
-(1696, 'Sumatera Barat', 102, NULL, NULL),
-(1697, 'Sumatera Selatan', 102, NULL, NULL),
-(1698, 'Sumatera Utara', 102, NULL, NULL),
-(1699, 'Yogyakarta', 102, NULL, NULL),
-(1700, 'Ardabil', 103, NULL, NULL),
-(1701, 'Azarbayjan-e Bakhtari', 103, NULL, NULL),
-(1702, 'Azarbayjan-e Khavari', 103, NULL, NULL),
-(1703, 'Bushehr', 103, NULL, NULL),
-(1704, 'Chahar Mahal-e Bakhtiari', 103, NULL, NULL),
-(1705, 'Esfahan', 103, NULL, NULL),
-(1706, 'Fars', 103, NULL, NULL),
-(1707, 'Gilan', 103, NULL, NULL),
-(1708, 'Golestan', 103, NULL, NULL),
-(1709, 'Hamadan', 103, NULL, NULL),
-(1710, 'Hormozgan', 103, NULL, NULL),
-(1711, 'Ilam', 103, NULL, NULL),
-(1712, 'Kerman', 103, NULL, NULL),
-(1713, 'Kermanshah', 103, NULL, NULL),
-(1714, 'Khorasan', 103, NULL, NULL),
-(1715, 'Khuzestan', 103, NULL, NULL),
-(1716, 'Kohgiluyeh-e Boyerahmad', 103, NULL, NULL),
-(1717, 'Kordestan', 103, NULL, NULL),
-(1718, 'Lorestan', 103, NULL, NULL),
-(1719, 'Markazi', 103, NULL, NULL),
-(1720, 'Mazandaran', 103, NULL, NULL),
-(1721, 'Ostan-e Esfahan', 103, NULL, NULL),
-(1722, 'Qazvin', 103, NULL, NULL),
-(1723, 'Qom', 103, NULL, NULL),
-(1724, 'Semnan', 103, NULL, NULL),
-(1725, 'Sistan-e Baluchestan', 103, NULL, NULL),
-(1726, 'Tehran', 103, NULL, NULL),
-(1727, 'Yazd', 103, NULL, NULL),
-(1728, 'Zanjan', 103, NULL, NULL),
-(1729, 'Babil', 104, NULL, NULL),
-(1730, 'Baghdad', 104, NULL, NULL),
-(1731, 'Dahuk', 104, NULL, NULL),
-(1732, 'Dhi Qar', 104, NULL, NULL),
-(1733, 'Diyala', 104, NULL, NULL),
-(1734, 'Erbil', 104, NULL, NULL),
-(1735, 'Irbil', 104, NULL, NULL),
-(1736, 'Karbala', 104, NULL, NULL),
-(1737, 'Kurdistan', 104, NULL, NULL),
-(1738, 'Maysan', 104, NULL, NULL),
-(1739, 'Ninawa', 104, NULL, NULL),
-(1740, 'Salah-ad-Din', 104, NULL, NULL),
-(1741, 'Wasit', 104, NULL, NULL),
-(1742, 'al-Anbar', 104, NULL, NULL),
-(1743, 'al-Basrah', 104, NULL, NULL),
-(1744, 'al-Muthanna', 104, NULL, NULL),
-(1745, 'al-Qadisiyah', 104, NULL, NULL),
-(1746, 'an-Najaf', 104, NULL, NULL),
-(1747, 'as-Sulaymaniyah', 104, NULL, NULL),
-(1748, 'at-Ta\'\'mim', 104, NULL, NULL),
-(1749, 'Armagh', 105, NULL, NULL),
-(1750, 'Carlow', 105, NULL, NULL),
-(1751, 'Cavan', 105, NULL, NULL),
-(1752, 'Clare', 105, NULL, NULL),
-(1753, 'Cork', 105, NULL, NULL),
-(1754, 'Donegal', 105, NULL, NULL),
-(1755, 'Dublin', 105, NULL, NULL),
-(1756, 'Galway', 105, NULL, NULL),
-(1757, 'Kerry', 105, NULL, NULL),
-(1758, 'Kildare', 105, NULL, NULL),
-(1759, 'Kilkenny', 105, NULL, NULL),
-(1760, 'Laois', 105, NULL, NULL),
-(1761, 'Leinster', 105, NULL, NULL),
-(1762, 'Leitrim', 105, NULL, NULL),
-(1763, 'Limerick', 105, NULL, NULL),
-(1764, 'Loch Garman', 105, NULL, NULL),
-(1765, 'Longford', 105, NULL, NULL),
-(1766, 'Louth', 105, NULL, NULL),
-(1767, 'Mayo', 105, NULL, NULL),
-(1768, 'Meath', 105, NULL, NULL),
-(1769, 'Monaghan', 105, NULL, NULL),
-(1770, 'Offaly', 105, NULL, NULL),
-(1771, 'Roscommon', 105, NULL, NULL),
-(1772, 'Sligo', 105, NULL, NULL),
-(1773, 'Tipperary North Riding', 105, NULL, NULL),
-(1774, 'Tipperary South Riding', 105, NULL, NULL),
-(1775, 'Ulster', 105, NULL, NULL),
-(1776, 'Waterford', 105, NULL, NULL),
-(1777, 'Westmeath', 105, NULL, NULL),
-(1778, 'Wexford', 105, NULL, NULL),
-(1779, 'Wicklow', 105, NULL, NULL),
-(1780, 'Beit Hanania', 106, NULL, NULL),
-(1781, 'Ben Gurion Airport', 106, NULL, NULL),
-(1782, 'Bethlehem', 106, NULL, NULL),
-(1783, 'Caesarea', 106, NULL, NULL),
-(1784, 'Centre', 106, NULL, NULL),
-(1785, 'Gaza', 106, NULL, NULL),
-(1786, 'Hadaron', 106, NULL, NULL),
-(1787, 'Haifa District', 106, NULL, NULL),
-(1788, 'Hamerkaz', 106, NULL, NULL),
-(1789, 'Hazafon', 106, NULL, NULL),
-(1790, 'Hebron', 106, NULL, NULL),
-(1791, 'Jaffa', 106, NULL, NULL),
-(1792, 'Jerusalem', 106, NULL, NULL),
-(1793, 'Khefa', 106, NULL, NULL),
-(1794, 'Kiryat Yam', 106, NULL, NULL),
-(1795, 'Lower Galilee', 106, NULL, NULL),
-(1796, 'Qalqilya', 106, NULL, NULL),
-(1797, 'Talme Elazar', 106, NULL, NULL),
-(1798, 'Tel Aviv', 106, NULL, NULL),
-(1799, 'Tsafon', 106, NULL, NULL),
-(1800, 'Umm El Fahem', 106, NULL, NULL),
-(1801, 'Yerushalayim', 106, NULL, NULL),
-(1802, 'Abruzzi', 107, NULL, NULL),
-(1803, 'Abruzzo', 107, NULL, NULL),
-(1804, 'Agrigento', 107, NULL, NULL),
-(1805, 'Alessandria', 107, NULL, NULL),
-(1806, 'Ancona', 107, NULL, NULL),
-(1807, 'Arezzo', 107, NULL, NULL),
-(1808, 'Ascoli Piceno', 107, NULL, NULL),
-(1809, 'Asti', 107, NULL, NULL),
-(1810, 'Avellino', 107, NULL, NULL),
-(1811, 'Bari', 107, NULL, NULL),
-(1812, 'Basilicata', 107, NULL, NULL),
-(1813, 'Belluno', 107, NULL, NULL),
-(1814, 'Benevento', 107, NULL, NULL),
-(1815, 'Bergamo', 107, NULL, NULL),
-(1816, 'Biella', 107, NULL, NULL),
-(1817, 'Bologna', 107, NULL, NULL),
-(1818, 'Bolzano', 107, NULL, NULL),
-(1819, 'Brescia', 107, NULL, NULL),
-(1820, 'Brindisi', 107, NULL, NULL),
-(1821, 'Calabria', 107, NULL, NULL),
-(1822, 'Campania', 107, NULL, NULL),
-(1823, 'Cartoceto', 107, NULL, NULL),
-(1824, 'Caserta', 107, NULL, NULL),
-(1825, 'Catania', 107, NULL, NULL),
-(1826, 'Chieti', 107, NULL, NULL),
-(1827, 'Como', 107, NULL, NULL),
-(1828, 'Cosenza', 107, NULL, NULL),
-(1829, 'Cremona', 107, NULL, NULL),
-(1830, 'Cuneo', 107, NULL, NULL),
-(1831, 'Emilia-Romagna', 107, NULL, NULL),
-(1832, 'Ferrara', 107, NULL, NULL),
-(1833, 'Firenze', 107, NULL, NULL),
-(1834, 'Florence', 107, NULL, NULL),
-(1835, 'Forli-Cesena', 107, NULL, NULL),
-(1836, 'Friuli-Venezia Giulia', 107, NULL, NULL),
-(1837, 'Frosinone', 107, NULL, NULL),
-(1838, 'Genoa', 107, NULL, NULL),
-(1839, 'Gorizia', 107, NULL, NULL),
-(1840, 'L\'\'Aquila', 107, NULL, NULL),
-(1841, 'Lazio', 107, NULL, NULL),
-(1842, 'Lecce', 107, NULL, NULL),
-(1843, 'Lecco', 107, NULL, NULL),
-(1844, 'Lecco Province', 107, NULL, NULL),
-(1845, 'Liguria', 107, NULL, NULL),
-(1846, 'Lodi', 107, NULL, NULL),
-(1847, 'Lombardia', 107, NULL, NULL),
-(1848, 'Lombardy', 107, NULL, NULL),
-(1849, 'Macerata', 107, NULL, NULL),
-(1850, 'Mantova', 107, NULL, NULL),
-(1851, 'Marche', 107, NULL, NULL),
-(1852, 'Messina', 107, NULL, NULL),
-(1853, 'Milan', 107, NULL, NULL),
-(1854, 'Modena', 107, NULL, NULL),
-(1855, 'Molise', 107, NULL, NULL),
-(1856, 'Molteno', 107, NULL, NULL),
-(1857, 'Montenegro', 107, NULL, NULL),
-(1858, 'Monza and Brianza', 107, NULL, NULL),
-(1859, 'Naples', 107, NULL, NULL),
-(1860, 'Novara', 107, NULL, NULL),
-(1861, 'Padova', 107, NULL, NULL),
-(1862, 'Parma', 107, NULL, NULL),
-(1863, 'Pavia', 107, NULL, NULL),
-(1864, 'Perugia', 107, NULL, NULL),
-(1865, 'Pesaro-Urbino', 107, NULL, NULL),
-(1866, 'Piacenza', 107, NULL, NULL),
-(1867, 'Piedmont', 107, NULL, NULL),
-(1868, 'Piemonte', 107, NULL, NULL),
-(1869, 'Pisa', 107, NULL, NULL),
-(1870, 'Pordenone', 107, NULL, NULL),
-(1871, 'Potenza', 107, NULL, NULL),
-(1872, 'Puglia', 107, NULL, NULL),
-(1873, 'Reggio Emilia', 107, NULL, NULL),
-(1874, 'Rimini', 107, NULL, NULL),
-(1875, 'Roma', 107, NULL, NULL),
-(1876, 'Salerno', 107, NULL, NULL),
-(1877, 'Sardegna', 107, NULL, NULL),
-(1878, 'Sassari', 107, NULL, NULL),
-(1879, 'Savona', 107, NULL, NULL),
-(1880, 'Sicilia', 107, NULL, NULL),
-(1881, 'Siena', 107, NULL, NULL),
-(1882, 'Sondrio', 107, NULL, NULL),
-(1883, 'South Tyrol', 107, NULL, NULL),
-(1884, 'Taranto', 107, NULL, NULL),
-(1885, 'Teramo', 107, NULL, NULL),
-(1886, 'Torino', 107, NULL, NULL),
-(1887, 'Toscana', 107, NULL, NULL),
-(1888, 'Trapani', 107, NULL, NULL),
-(1889, 'Trentino-Alto Adige', 107, NULL, NULL),
-(1890, 'Trento', 107, NULL, NULL),
-(1891, 'Treviso', 107, NULL, NULL),
-(1892, 'Udine', 107, NULL, NULL),
-(1893, 'Umbria', 107, NULL, NULL),
-(1894, 'Valle d\'\'Aosta', 107, NULL, NULL),
-(1895, 'Varese', 107, NULL, NULL),
-(1896, 'Veneto', 107, NULL, NULL),
-(1897, 'Venezia', 107, NULL, NULL),
-(1898, 'Verbano-Cusio-Ossola', 107, NULL, NULL),
-(1899, 'Vercelli', 107, NULL, NULL),
-(1900, 'Verona', 107, NULL, NULL),
-(1901, 'Vicenza', 107, NULL, NULL),
-(1902, 'Viterbo', 107, NULL, NULL),
-(1903, 'Buxoro Viloyati', 108, NULL, NULL),
-(1904, 'Clarendon', 108, NULL, NULL),
-(1905, 'Hanover', 108, NULL, NULL),
-(1906, 'Kingston', 108, NULL, NULL),
-(1907, 'Manchester', 108, NULL, NULL),
-(1908, 'Portland', 108, NULL, NULL),
-(1909, 'Saint Andrews', 108, NULL, NULL),
-(1910, 'Saint Ann', 108, NULL, NULL),
-(1911, 'Saint Catherine', 108, NULL, NULL),
-(1912, 'Saint Elizabeth', 108, NULL, NULL),
-(1913, 'Saint James', 108, NULL, NULL),
-(1914, 'Saint Mary', 108, NULL, NULL),
-(1915, 'Saint Thomas', 108, NULL, NULL),
-(1916, 'Trelawney', 108, NULL, NULL),
-(1917, 'Westmoreland', 108, NULL, NULL),
-(1918, 'Aichi', 109, NULL, NULL),
-(1919, 'Akita', 109, NULL, NULL),
-(1920, 'Aomori', 109, NULL, NULL),
-(1921, 'Chiba', 109, NULL, NULL),
-(1922, 'Ehime', 109, NULL, NULL),
-(1923, 'Fukui', 109, NULL, NULL),
-(1924, 'Fukuoka', 109, NULL, NULL),
-(1925, 'Fukushima', 109, NULL, NULL),
-(1926, 'Gifu', 109, NULL, NULL),
-(1927, 'Gumma', 109, NULL, NULL),
-(1928, 'Hiroshima', 109, NULL, NULL),
-(1929, 'Hokkaido', 109, NULL, NULL),
-(1930, 'Hyogo', 109, NULL, NULL),
-(1931, 'Ibaraki', 109, NULL, NULL),
-(1932, 'Ishikawa', 109, NULL, NULL),
-(1933, 'Iwate', 109, NULL, NULL),
-(1934, 'Kagawa', 109, NULL, NULL),
-(1935, 'Kagoshima', 109, NULL, NULL),
-(1936, 'Kanagawa', 109, NULL, NULL),
-(1937, 'Kanto', 109, NULL, NULL),
-(1938, 'Kochi', 109, NULL, NULL),
-(1939, 'Kumamoto', 109, NULL, NULL),
-(1940, 'Kyoto', 109, NULL, NULL),
-(1941, 'Mie', 109, NULL, NULL),
-(1942, 'Miyagi', 109, NULL, NULL),
-(1943, 'Miyazaki', 109, NULL, NULL),
-(1944, 'Nagano', 109, NULL, NULL),
-(1945, 'Nagasaki', 109, NULL, NULL),
-(1946, 'Nara', 109, NULL, NULL),
-(1947, 'Niigata', 109, NULL, NULL),
-(1948, 'Oita', 109, NULL, NULL),
-(1949, 'Okayama', 109, NULL, NULL),
-(1950, 'Okinawa', 109, NULL, NULL),
-(1951, 'Osaka', 109, NULL, NULL),
-(1952, 'Saga', 109, NULL, NULL),
-(1953, 'Saitama', 109, NULL, NULL),
-(1954, 'Shiga', 109, NULL, NULL),
-(1955, 'Shimane', 109, NULL, NULL),
-(1956, 'Shizuoka', 109, NULL, NULL),
-(1957, 'Tochigi', 109, NULL, NULL),
-(1958, 'Tokushima', 109, NULL, NULL),
-(1959, 'Tokyo', 109, NULL, NULL),
-(1960, 'Tottori', 109, NULL, NULL),
-(1961, 'Toyama', 109, NULL, NULL),
-(1962, 'Wakayama', 109, NULL, NULL),
-(1963, 'Yamagata', 109, NULL, NULL),
-(1964, 'Yamaguchi', 109, NULL, NULL),
-(1965, 'Yamanashi', 109, NULL, NULL),
-(1966, 'Grouville', 110, NULL, NULL),
-(1967, 'Saint Brelade', 110, NULL, NULL),
-(1968, 'Saint Clement', 110, NULL, NULL),
-(1969, 'Saint Helier', 110, NULL, NULL),
-(1970, 'Saint John', 110, NULL, NULL),
-(1971, 'Saint Lawrence', 110, NULL, NULL),
-(1972, 'Saint Martin', 110, NULL, NULL),
-(1973, 'Saint Mary', 110, NULL, NULL),
-(1974, 'Saint Peter', 110, NULL, NULL),
-(1975, 'Saint Saviour', 110, NULL, NULL),
-(1976, 'Trinity', 110, NULL, NULL),
-(1977, 'Ajlun', 111, NULL, NULL),
-(1978, 'Amman', 111, NULL, NULL),
-(1979, 'Irbid', 111, NULL, NULL),
-(1980, 'Jarash', 111, NULL, NULL),
-(1981, 'Ma\'\'an', 111, NULL, NULL),
-(1982, 'Madaba', 111, NULL, NULL),
-(1983, 'al-\'\'Aqabah', 111, NULL, NULL),
-(1984, 'al-Balqa', 111, NULL, NULL),
-(1985, 'al-Karak', 111, NULL, NULL),
-(1986, 'al-Mafraq', 111, NULL, NULL),
-(1987, 'at-Tafilah', 111, NULL, NULL),
-(1988, 'az-Zarqa', 111, NULL, NULL),
-(1989, 'Akmecet', 112, NULL, NULL),
-(1990, 'Akmola', 112, NULL, NULL),
-(1991, 'Aktobe', 112, NULL, NULL),
-(1992, 'Almati', 112, NULL, NULL),
-(1993, 'Atirau', 112, NULL, NULL),
-(1994, 'Batis Kazakstan', 112, NULL, NULL),
-(1995, 'Burlinsky Region', 112, NULL, NULL),
-(1996, 'Karagandi', 112, NULL, NULL),
-(1997, 'Kostanay', 112, NULL, NULL),
-(1998, 'Mankistau', 112, NULL, NULL),
-(1999, 'Ontustik Kazakstan', 112, NULL, NULL),
-(2000, 'Pavlodar', 112, NULL, NULL),
-(2001, 'Sigis Kazakstan', 112, NULL, NULL),
-(2002, 'Soltustik Kazakstan', 112, NULL, NULL),
-(2003, 'Taraz', 112, NULL, NULL),
-(2004, 'Central', 113, NULL, NULL),
-(2005, 'Coast', 113, NULL, NULL),
-(2006, 'Eastern', 113, NULL, NULL),
-(2007, 'Nairobi', 113, NULL, NULL),
-(2008, 'North Eastern', 113, NULL, NULL),
-(2009, 'Nyanza', 113, NULL, NULL),
-(2010, 'Rift Valley', 113, NULL, NULL),
-(2011, 'Western', 113, NULL, NULL),
-(2012, 'Abaiang', 114, NULL, NULL),
-(2013, 'Abemana', 114, NULL, NULL),
-(2014, 'Aranuka', 114, NULL, NULL),
-(2015, 'Arorae', 114, NULL, NULL),
-(2016, 'Banaba', 114, NULL, NULL),
-(2017, 'Beru', 114, NULL, NULL),
-(2018, 'Butaritari', 114, NULL, NULL),
-(2019, 'Kiritimati', 114, NULL, NULL),
-(2020, 'Kuria', 114, NULL, NULL),
-(2021, 'Maiana', 114, NULL, NULL),
-(2022, 'Makin', 114, NULL, NULL),
-(2023, 'Marakei', 114, NULL, NULL),
-(2024, 'Nikunau', 114, NULL, NULL),
-(2025, 'Nonouti', 114, NULL, NULL),
-(2026, 'Onotoa', 114, NULL, NULL),
-(2027, 'Phoenix Islands', 114, NULL, NULL),
-(2028, 'Tabiteuea North', 114, NULL, NULL),
-(2029, 'Tabiteuea South', 114, NULL, NULL),
-(2030, 'Tabuaeran', 114, NULL, NULL),
-(2031, 'Tamana', 114, NULL, NULL),
-(2032, 'Tarawa North', 114, NULL, NULL),
-(2033, 'Tarawa South', 114, NULL, NULL),
-(2034, 'Teraina', 114, NULL, NULL),
-(2035, 'Chagangdo', 115, NULL, NULL),
-(2036, 'Hamgyeongbukto', 115, NULL, NULL),
-(2037, 'Hamgyeongnamdo', 115, NULL, NULL),
-(2038, 'Hwanghaebukto', 115, NULL, NULL),
-(2039, 'Hwanghaenamdo', 115, NULL, NULL),
-(2040, 'Kaeseong', 115, NULL, NULL),
-(2041, 'Kangweon', 115, NULL, NULL),
-(2042, 'Nampo', 115, NULL, NULL),
-(2043, 'Pyeonganbukto', 115, NULL, NULL),
-(2044, 'Pyeongannamdo', 115, NULL, NULL),
-(2045, 'Pyeongyang', 115, NULL, NULL),
-(2046, 'Yanggang', 115, NULL, NULL),
-(2047, 'Busan', 116, NULL, NULL),
-(2048, 'Cheju', 116, NULL, NULL),
-(2049, 'Chollabuk', 116, NULL, NULL),
-(2050, 'Chollanam', 116, NULL, NULL),
-(2051, 'Chungbuk', 116, NULL, NULL),
-(2052, 'Chungcheongbuk', 116, NULL, NULL),
-(2053, 'Chungcheongnam', 116, NULL, NULL),
-(2054, 'Chungnam', 116, NULL, NULL),
-(2055, 'Daegu', 116, NULL, NULL),
-(2056, 'Gangwon-do', 116, NULL, NULL),
-(2057, 'Goyang-si', 116, NULL, NULL),
-(2058, 'Gyeonggi-do', 116, NULL, NULL),
-(2059, 'Gyeongsang', 116, NULL, NULL),
-(2060, 'Gyeongsangnam-do', 116, NULL, NULL),
-(2061, 'Incheon', 116, NULL, NULL),
-(2062, 'Jeju-Si', 116, NULL, NULL),
-(2063, 'Jeonbuk', 116, NULL, NULL),
-(2064, 'Kangweon', 116, NULL, NULL),
-(2065, 'Kwangju', 116, NULL, NULL),
-(2066, 'Kyeonggi', 116, NULL, NULL),
-(2067, 'Kyeongsangbuk', 116, NULL, NULL),
-(2068, 'Kyeongsangnam', 116, NULL, NULL),
-(2069, 'Kyonggi-do', 116, NULL, NULL),
-(2070, 'Kyungbuk-Do', 116, NULL, NULL),
-(2071, 'Kyunggi-Do', 116, NULL, NULL),
-(2072, 'Kyunggi-do', 116, NULL, NULL),
-(2073, 'Pusan', 116, NULL, NULL),
-(2074, 'Seoul', 116, NULL, NULL),
-(2075, 'Sudogwon', 116, NULL, NULL),
-(2076, 'Taegu', 116, NULL, NULL),
-(2077, 'Taejeon', 116, NULL, NULL),
-(2078, 'Taejon-gwangyoksi', 116, NULL, NULL),
-(2079, 'Ulsan', 116, NULL, NULL),
-(2080, 'Wonju', 116, NULL, NULL),
-(2081, 'gwangyoksi', 116, NULL, NULL),
-(2082, 'Al Asimah', 117, NULL, NULL),
-(2083, 'Hawalli', 117, NULL, NULL),
-(2084, 'Mishref', 117, NULL, NULL),
-(2085, 'Qadesiya', 117, NULL, NULL),
-(2086, 'Safat', 117, NULL, NULL),
-(2087, 'Salmiya', 117, NULL, NULL),
-(2088, 'al-Ahmadi', 117, NULL, NULL),
-(2089, 'al-Farwaniyah', 117, NULL, NULL),
-(2090, 'al-Jahra', 117, NULL, NULL),
-(2091, 'al-Kuwayt', 117, NULL, NULL),
-(2092, 'Batken', 118, NULL, NULL),
-(2093, 'Bishkek', 118, NULL, NULL),
-(2094, 'Chui', 118, NULL, NULL),
-(2095, 'Issyk-Kul', 118, NULL, NULL),
-(2096, 'Jalal-Abad', 118, NULL, NULL),
+(1, 'Kanthale', 101, NULL, NULL),
 (2097, 'Naryn', 118, NULL, NULL),
 (2098, 'Osh', 118, NULL, NULL),
 (2099, 'Talas', 118, NULL, NULL),
@@ -4222,8 +2257,7 @@ INSERT INTO `states` (`id`, `name`, `country_id`, `created_at`, `updated_at`) VA
 (2852, 'Metropolitan Manila Area', 173, NULL, NULL),
 (2853, 'Muslim Mindanao', 173, NULL, NULL),
 (2854, 'Northern Mindanao', 173, NULL, NULL),
-(2855, 'Southern Mindanao', 173, NULL, NULL);
-INSERT INTO `states` (`id`, `name`, `country_id`, `created_at`, `updated_at`) VALUES
+(2855, 'Southern Mindanao', 173, NULL, NULL),
 (2856, 'Southern Tagalog', 173, NULL, NULL),
 (2857, 'Western Mindanao', 173, NULL, NULL),
 (2858, 'Western Visayas', 173, NULL, NULL),
@@ -4847,7 +2881,8 @@ INSERT INTO `states` (`id`, `name`, `country_id`, `created_at`, `updated_at`) VA
 (3476, 'Hsinchu City', 214, NULL, NULL),
 (3477, 'Hualien County', 214, NULL, NULL),
 (3480, 'Kaohsiung City', 214, NULL, NULL),
-(3481, 'Keelung City', 214, NULL, NULL),
+(3481, 'Keelung City', 214, NULL, NULL);
+INSERT INTO `states` (`id`, `name`, `country_id`, `created_at`, `updated_at`) VALUES
 (3482, 'Kinmen County', 214, NULL, NULL),
 (3483, 'Miaoli County', 214, NULL, NULL),
 (3484, 'Nantou County', 214, NULL, NULL),
@@ -5490,16 +3525,23 @@ INSERT INTO `states` (`id`, `name`, `country_id`, `created_at`, `updated_at`) VA
 --
 
 CREATE TABLE `suppliers` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `address` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `suppliers`
+--
+
+INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `country`, `city`, `address`, `created_at`, `updated_at`) VALUES
+(1, 'Common', 'suplier@gmail.com', '0711111111', 'sri lanka', 'no city', 'No add', '2025-05-08 20:23:57', '2025-05-08 20:23:57');
 
 -- --------------------------------------------------------
 
@@ -5508,18 +3550,18 @@ CREATE TABLE `suppliers` (
 --
 
 CREATE TABLE `transfers` (
-  `id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `date` date NOT NULL,
-  `from_warehouse_id` bigint UNSIGNED NOT NULL,
-  `to_warehouse_id` bigint UNSIGNED NOT NULL,
+  `from_warehouse_id` bigint(20) UNSIGNED NOT NULL,
+  `to_warehouse_id` bigint(20) UNSIGNED NOT NULL,
   `tax_rate` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
   `discount` double DEFAULT NULL,
   `shipping` double DEFAULT NULL,
   `grand_total` double DEFAULT NULL,
-  `status` int DEFAULT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci,
-  `reference_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `note` text DEFAULT NULL,
+  `reference_code` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5531,15 +3573,15 @@ CREATE TABLE `transfers` (
 --
 
 CREATE TABLE `transfer_items` (
-  `id` bigint UNSIGNED NOT NULL,
-  `transfer_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `transfer_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `product_price` double DEFAULT NULL,
   `net_unit_price` double DEFAULT NULL,
-  `tax_type` int NOT NULL,
+  `tax_type` int(11) NOT NULL,
   `tax_value` double DEFAULT NULL,
   `tax_amount` double DEFAULT NULL,
-  `discount_type` int NOT NULL,
+  `discount_type` int(11) NOT NULL,
   `discount_value` double DEFAULT NULL,
   `discount_amount` double DEFAULT NULL,
   `quantity` double DEFAULT NULL,
@@ -5555,13 +3597,20 @@ CREATE TABLE `transfer_items` (
 --
 
 CREATE TABLE `units` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `short_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `base_unit` bigint NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `short_name` varchar(255) NOT NULL,
+  `base_unit` bigint(20) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `units`
+--
+
+INSERT INTO `units` (`id`, `name`, `short_name`, `base_unit`, `created_at`, `updated_at`) VALUES
+(1, 'count', 'count', 1, '2025-05-08 20:15:02', '2025-05-08 20:15:02');
 
 -- --------------------------------------------------------
 
@@ -5570,18 +3619,18 @@ CREATE TABLE `units` (
 --
 
 CREATE TABLE `users` (
-  `id` bigint UNSIGNED NOT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `language` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'en'
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `language` varchar(255) NOT NULL DEFAULT 'en'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -5589,7 +3638,50 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `phone`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `status`, `language`) VALUES
-(1, 'admin', NULL, 'admin@infy-pos.com', NULL, '2023-11-03 23:52:45', '$2y$10$7wFp3nL4Uml7s8OIEfYQjOcxfsr7fJe2Rzl9cwg6X8EI1C3e/MbCG', NULL, '2023-11-03 23:52:45', '2023-11-03 23:52:45', 1, 'en');
+(1, 'Lalith', 'center', 'lalith@gmail.com', '0712071066', '2023-11-03 23:52:45', '$2y$10$7wFp3nL4Uml7s8OIEfYQjOcxfsr7fJe2Rzl9cwg6X8EI1C3e/MbCG', NULL, '2023-11-03 23:52:45', '2025-05-08 21:11:50', 1, 'en');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `variations`
+--
+
+CREATE TABLE `variations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `variation_products`
+--
+
+CREATE TABLE `variation_products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `main_product_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `variation_id` bigint(20) UNSIGNED NOT NULL,
+  `variation_type_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `variation_types`
+--
+
+CREATE TABLE `variation_types` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `variation_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -5598,13 +3690,13 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `phone`, `email_v
 --
 
 CREATE TABLE `warehouses` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zip_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `zip_code` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -5614,7 +3706,7 @@ CREATE TABLE `warehouses` (
 --
 
 INSERT INTO `warehouses` (`id`, `name`, `phone`, `country`, `city`, `email`, `zip_code`, `created_at`, `updated_at`) VALUES
-(1, 'warehouse', '123456789', 'india', 'mumbai', 'warehouse1@infypos.com', '12345', '2023-11-03 23:52:46', '2023-11-03 23:52:46');
+(1, 'warehouse', '123456789', 'sri lanka', 'Kanthale', 'warehouse@gmail.com', '12345', '2023-11-03 23:52:46', '2025-05-08 23:39:13');
 
 --
 -- Indexes for dumped tables
@@ -5736,6 +3828,12 @@ ALTER TABLE `mail_templates`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `main_products`
+--
+ALTER TABLE `main_products`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `manage_stocks`
 --
 ALTER TABLE `manage_stocks`
@@ -5806,7 +3904,8 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `products_code_unique` (`code`),
   ADD KEY `products_product_category_id_foreign` (`product_category_id`),
-  ADD KEY `products_brand_id_foreign` (`brand_id`);
+  ADD KEY `products_brand_id_foreign` (`brand_id`),
+  ADD KEY `products_main_product_id_foreign` (`main_product_id`);
 
 --
 -- Indexes for table `product_categories`
@@ -5980,6 +4079,30 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Indexes for table `variations`
+--
+ALTER TABLE `variations`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `variations_name_unique` (`name`);
+
+--
+-- Indexes for table `variation_products`
+--
+ALTER TABLE `variation_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `variation_products_product_id_foreign` (`product_id`),
+  ADD KEY `variation_products_variation_id_foreign` (`variation_id`),
+  ADD KEY `variation_products_variation_type_id_foreign` (`variation_type_id`),
+  ADD KEY `variation_products_main_product_id_foreign` (`main_product_id`);
+
+--
+-- Indexes for table `variation_types`
+--
+ALTER TABLE `variation_types`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `variation_types_variation_id_foreign` (`variation_id`);
+
+--
 -- Indexes for table `warehouses`
 --
 ALTER TABLE `warehouses`
@@ -5994,271 +4117,295 @@ ALTER TABLE `warehouses`
 -- AUTO_INCREMENT for table `adjustments`
 --
 ALTER TABLE `adjustments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `adjustment_items`
 --
 ALTER TABLE `adjustment_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `base_units`
 --
 ALTER TABLE `base_units`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
 
 --
 -- AUTO_INCREMENT for table `coupon_codes`
 --
 ALTER TABLE `coupon_codes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `currencies`
 --
 ALTER TABLE `currencies`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `expense_categories`
 --
 ALTER TABLE `expense_categories`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `holds`
 --
 ALTER TABLE `holds`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `hold_items`
 --
 ALTER TABLE `hold_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `languages`
 --
 ALTER TABLE `languages`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `mail_templates`
 --
 ALTER TABLE `mail_templates`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `main_products`
+--
+ALTER TABLE `main_products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `manage_stocks`
 --
 ALTER TABLE `manage_stocks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `media`
 --
 ALTER TABLE `media`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pos_register`
 --
 ALTER TABLE `pos_register`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `product_categories`
 --
 ALTER TABLE `product_categories`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `purchases`
 --
 ALTER TABLE `purchases`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `purchases_return`
 --
 ALTER TABLE `purchases_return`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `purchases_return_items`
 --
 ALTER TABLE `purchases_return_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `purchase_items`
 --
 ALTER TABLE `purchase_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `quotations`
 --
 ALTER TABLE `quotations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `quotation_items`
 --
 ALTER TABLE `quotation_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sales_payments`
 --
 ALTER TABLE `sales_payments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `sales_return`
 --
 ALTER TABLE `sales_return`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `sale_items`
 --
 ALTER TABLE `sale_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sale_return_items`
 --
 ALTER TABLE `sale_return_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `sms_settings`
 --
 ALTER TABLE `sms_settings`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `sms_templates`
 --
 ALTER TABLE `sms_templates`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `states`
 --
 ALTER TABLE `states`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4122;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4122;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `transfers`
 --
 ALTER TABLE `transfers`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transfer_items`
 --
 ALTER TABLE `transfer_items`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `units`
 --
 ALTER TABLE `units`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `variations`
+--
+ALTER TABLE `variations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `variation_products`
+--
+ALTER TABLE `variation_products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `variation_types`
+--
+ALTER TABLE `variation_types`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `warehouses`
 --
 ALTER TABLE `warehouses`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -6335,6 +4482,7 @@ ALTER TABLE `pos_register`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_brand_id_foreign` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `products_main_product_id_foreign` FOREIGN KEY (`main_product_id`) REFERENCES `main_products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `products_product_category_id_foreign` FOREIGN KEY (`product_category_id`) REFERENCES `product_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -6441,6 +4589,21 @@ ALTER TABLE `transfers`
 ALTER TABLE `transfer_items`
   ADD CONSTRAINT `transfer_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `transfer_items_transfer_id_foreign` FOREIGN KEY (`transfer_id`) REFERENCES `transfers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `variation_products`
+--
+ALTER TABLE `variation_products`
+  ADD CONSTRAINT `variation_products_main_product_id_foreign` FOREIGN KEY (`main_product_id`) REFERENCES `main_products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `variation_products_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `variation_products_variation_id_foreign` FOREIGN KEY (`variation_id`) REFERENCES `variations` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `variation_products_variation_type_id_foreign` FOREIGN KEY (`variation_type_id`) REFERENCES `variation_types` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `variation_types`
+--
+ALTER TABLE `variation_types`
+  ADD CONSTRAINT `variation_types_variation_id_foreign` FOREIGN KEY (`variation_id`) REFERENCES `variations` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
